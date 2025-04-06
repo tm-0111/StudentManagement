@@ -25,7 +25,7 @@ public class Application {
 
   @GetMapping("/student")
   public List<Student> getAllStudent() {
-    return repository.getAllstudents();
+    return repository.getAllStudents();
   }
 
   @PostMapping("/student")
