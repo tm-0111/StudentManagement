@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class Application {
 
   @Autowired
-  private StudentRepository studentRepository;
-
-  @Autowired
-  private StudentCoursesRepository studentCoursesRepository;
+  private StudentRepository Repository;
 
   public static void main(String[] args) {
     SpringApplication.run(Application.class, args);
@@ -24,11 +21,11 @@ public class Application {
 
   @GetMapping("/studentList")
   public List<Student> getAllStudent() {
-    return studentRepository.getAll();
+    return Repository.search();
   }
 
-  @GetMapping("/student_courses")
+  @GetMapping("/student_coursesList")
   public List<StudentCourses> getAllStudentCourses() {
-    return studentCoursesRepository.getAll();
+    return Repository.searchStudentsCourses();
   }
 }

@@ -11,10 +11,10 @@ import lombok.Setter;
 public class StudentCourses {
 
   private Long id;
-  private Long student_id;
-  private Long courses_id;
-  private LocalDate start_date;
-  private LocalDate end_date;
-  private LocalDateTime update_at;
+  private Long student_Id;
+  private Long courses_Id;
+  private LocalDate start_Date;
+  private LocalDate end_Date;
+  private LocalDateTime update_At;
 
 }
