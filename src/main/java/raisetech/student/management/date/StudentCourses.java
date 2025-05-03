@@ -1,7 +1,6 @@
 package raisetech.student.management.date;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +14,6 @@ public class StudentCourses {
   private Long courses_id;
   private LocalDate start_date;
   private LocalDate end_date;
-  private LocalDateTime update_at;
-
+  private String remarks;
+  private boolean isDeleted;
 }
