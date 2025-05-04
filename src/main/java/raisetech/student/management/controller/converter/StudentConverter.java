@@ -25,7 +25,6 @@ public class StudentConverter {
           .filter(studentCourse -> !studentCourse.isDeleted())
           .collect(Collectors.toList());
 
-      studentDetail.setStudentCourses(convertStudentCourses);
       studentDetails.add(studentDetail);
     });
     return studentDetails;

@@ -26,6 +26,7 @@ public class StudentController {
     this.converter = converter;
   }
 
+  //学生一覧
   @GetMapping("/studentList")
   public String getStudentList(Model model) {
     List<Student> students = service.searchStudentList();
@@ -35,24 +36,13 @@ public class StudentController {
     return "studentList";
   }
 
-  @GetMapping("/studentCourseList")
-  public List<StudentCourses> getStudentCourseList() {
-    return service.searchStudentCourseList();
-  }
-
-  @GetMapping("/newStudent")
-  public String newStudent(Model model) {
-    model.addAttribute("studentDetail", new StudentDetail());
-    return "registerStudent";
-  }
-
+  //学生登録
   @PostMapping("/registerStudent")
   public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
+    //System.out.println(studentDetail.getStudent().getName() + "登録されました");
     if (result.hasErrors()) {
       return "registerStudent";
     }
-    //System.out.println(studentDetail.getStudent().getName() + "登録されました");
-    return "redirect:/studentList";
+    return "registerStudentList";
   }
-
 }
