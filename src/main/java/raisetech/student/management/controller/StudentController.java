@@ -30,28 +30,31 @@ public class StudentController {
   public String getStudentList(Model model) {
     List<Student> students = service.searchStudentList();
     List<StudentCourses> studentCourses = service.searchStudentCourseList();
+    //studentCourses.forEach(sc -> System.out.println("courseName = " + sc.getCourseName()));
 
     model.addAttribute("studentList", converter.convertStudentDetails(students, studentCourses));
     return "studentList";
   }
 
-  @GetMapping("/studentCourseList")
-  public List<StudentCourses> getStudentCourseList() {
-    return service.searchStudentCourseList();
-  }
-
+  //新規登録画面
   @GetMapping("/newStudent")
   public String newStudent(Model model) {
-    model.addAttribute("studentDetail", new StudentDetail());
+    StudentDetail studentDetail = new StudentDetail();
+
+    model.addAttribute("studentDetail", studentDetail);
     return "registerStudent";
   }
 
+  //登録
   @PostMapping("/registerStudent")
   public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
     if (result.hasErrors()) {
       return "registerStudent";
     }
     //System.out.println(studentDetail.getStudent().getName() + "登録されました");
+//保存
+    service.insertStudentWithCourses(studentDetail);
+
     return "redirect:/studentList";
   }
 
