@@ -1,5 +1,6 @@
 package raisetech.student.management.controller;
 
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,18 +30,21 @@ public class StudentController {
   @GetMapping("/studentList")
   public String getStudentList(Model model) {
     List<Student> students = service.searchStudentList();
-    List<StudentCourses> studentCourses = service.searchStudentCourseList();
-    //studentCourses.forEach(sc -> System.out.println("courseName = " + sc.getCourseName()));
-
-    model.addAttribute("studentList", converter.convertStudentDetails(students, studentCourses));
+    List<StudentCourses> courses = service.searchStudentCourseList();
+    model.addAttribute("studentList", converter.convertStudentDetails(students, courses));
     return "studentList";
+  }
+
+  @GetMapping("/studentCoursesList")
+  List<StudentCourses> getStudentCourseList() {
+    return service.searchStudentCourseList();
   }
 
   //新規登録画面
   @GetMapping("/newStudent")
   public String newStudent(Model model) {
     StudentDetail studentDetail = new StudentDetail();
-
+    studentDetail.setStudentCourses((Arrays.asList(new StudentCourses())));
     model.addAttribute("studentDetail", studentDetail);
     return "registerStudent";
   }
@@ -51,11 +55,11 @@ public class StudentController {
     if (result.hasErrors()) {
       return "registerStudent";
     }
-    //System.out.println(studentDetail.getStudent().getName() + "登録されました");
-//保存
-    service.insertStudentWithCourses(studentDetail);
-
+    service.registerStudent(studentDetail);
+    //①新規受講生情報を登録する処理
+    //②コース情報も一緒に登録できるように実装する
     return "redirect:/studentList";
   }
-
 }
+
+

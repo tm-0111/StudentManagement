@@ -3,6 +3,7 @@ package raisetech.student.management.Repository;
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import raisetech.student.management.date.Student;
 import raisetech.student.management.date.StudentCourses;
@@ -28,10 +29,16 @@ public interface StudentRepository {
   @Select("SELECT * FROM student_courses")
   List<StudentCourses> searchStudentCourses();
 
-  @Insert("INSERT INTO `students` (name) VALUES (#{name})")
-  void saveStudent(Student student);
+  @Insert(
+      "INSERT INTO students(name, nickname, kana_name, email, region, age, gender, remarks, deleted) "
+          + "VALUES (#{name}, #{nickname}, #{kanaName}, #{email}, #{area}, #{age}, #{sex}, #{remark}, false)")
+  @Options(useGeneratedKeys = true, keyProperty = "id")
+  void registerStudent(Student student);
 
-  @Insert("INSERT INTO `student_courses` (course_name, student_id) VALUES (#{courseName}, #{student.id})")
-  void saveStudentCourse(StudentCourses studentCourses);
+
+  @Insert("INSERT INTO student_courses (course_name, student_id, start_date, end_date, update_at)"
+      + " VALUES (#{courseName}, #{student_id}, #{start_date}, #{end_date}, #{update})")
+  @Options(useGeneratedKeys = true, keyProperty = "id")
+  void registerStudentCourse(StudentCourses studentCourses);
 
 }
