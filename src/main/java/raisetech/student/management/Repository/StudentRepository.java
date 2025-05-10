@@ -29,9 +29,9 @@ public interface StudentRepository {
   List<StudentCourses> searchStudentCourses();
 
   @Insert("INSERT INTO `students` (name) VALUES (#{name})")
-  void saveStudent(Student student);
+  void insertStudent(Student student);
 
   @Insert("INSERT INTO `student_courses` (course_name, student_id) VALUES (#{courseName}, #{student.id})")
-  void saveStudentCourse(StudentCourses studentCourses);
+  void insertStudentCourse(StudentCourses studentCourses);
 
 }

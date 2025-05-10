@@ -29,12 +29,12 @@ public class StudentService {
 
   public void insertStudentWithCourses(StudentDetail studentDetail) {
     Student student = studentDetail.getStudent();
-    repository.saveStudent(student);  //学生保存
+    repository.insertStudent(student);  //学生保存
 
     StudentCourses course = studentDetail.getStudentCourses();
     if (course != null && course.getCourseName() != null && !course.getCourseName().isBlank()) {
-      course.setStudent_id(student.getId());  // 外部キー
-      repository.saveStudentCourse(course);  //コース保存
+      course.setStudent_Id(student.getId());  // 外部キー
+      repository.insertStudentCourse(course);  //コース保存
     }
   }
 }

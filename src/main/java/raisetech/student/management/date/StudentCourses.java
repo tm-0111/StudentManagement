@@ -11,8 +11,8 @@ public class StudentCourses {
 
   private Student student;
   private long id;
-  private long student_id;
-  private long courses_id;
+  private long student_Id;
+  private long courses_Id;
   private LocalDate start_date;
   private LocalDate end_date;
   private String remarks;
