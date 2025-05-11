@@ -1,7 +1,6 @@
 package raisetech.student.management.Repository;
 
 import java.util.List;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import raisetech.student.management.date.Student;
@@ -25,13 +24,8 @@ public interface StudentRepository {
   @Select("SELECT * FROM students")
   List<Student> search();
 
-  @Select("SELECT * FROM student_courses")
+  @Select("SELECT * FROM students_courses")
   List<StudentCourses> searchStudentCourses();
 
-  @Insert("INSERT INTO `students` (name) VALUES (#{name})")
-  void insertStudent(Student student);
-
-  @Insert("INSERT INTO `student_courses` (course_name, student_id) VALUES (#{courseName}, #{student.id})")
-  void insertStudentCourse(StudentCourses studentCourses);
 
 }
