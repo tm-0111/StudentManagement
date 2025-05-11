@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>受講生一覧</title>
+</head>
+<body>
+<h1>受講生情報一覧</h1>
+<table border="1">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>名前</th>
+    <th>カナ名</th>
+    <th>ニックネーム</th>
+    <th>メールアドレス</th>
+    <th>地域</th>
+    <th>年齢</th>
+    <th>性別</th>
+    <th>備考</th>
+    <th>コース</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="studentDetail : ${studentList}">
+    <td th:text="${studentDetail.student.id}">1</td>
+    <td th:text="${studentDetail.student.name}">山田太郎</td>
+    <td th:text="${studentDetail.student.kanaName}">ヤマダタロウ</td>
+    <td th:text="${studentDetail.student.nickname}">タロー</td>
+    <td th:text="${studentDetail.student.email}">taro@example.com</td>
+    <td th:text="${studentDetail.student.area}">東京</td>
+    <td th:text="${studentDetail.student.age}">20</td>
+    <td th:text="${studentDetail.student.sex}">man</td>
+    <td th:text="${studentDetail.student.remark}">no</td>
+    <td>
+      <span th:if="${not #lists.isEmpty(studentDetail.studentCourses)}">
+        <span th:each="course : ${studentDetail.studentCourses}"
+              th:text="${course.courseName}">コース名</span>
+      </span>
+      <span th:if="${#lists.isEmpty(studentDetail.studentCourses)}">未登録</span>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
