@@ -36,7 +36,7 @@ public class StudentService {
   public void registerStudent(StudentDetail studentDetail) {
     repository.registerStudent(studentDetail.getStudent());
     for (StudentCourses studentCourse : studentDetail.getStudentCourses()) {
-      studentCourse.setStudent_Id(studentDetail.getStudent().getId());
+      studentCourse.setStudentId(studentDetail.getStudent().getId());
       studentCourse.setStart_date(LocalDateTime.now());
       studentCourse.setEnd_date(LocalDateTime.now().plusYears(1));
       coursesRepository.registerStudentCourse(studentCourse);
@@ -62,11 +62,13 @@ public class StudentService {
     //古いコースを削除
     coursesRepository.deleteByStudentId(studentDetail.getStudent().getId());
     //新しいコースを追加
-    for (StudentCourses studentCourse : studentDetail.getStudentCourses()) {
-      studentCourse.setStudent_Id(studentDetail.getStudent().getId());
-      studentCourse.setStart_date(LocalDateTime.now());
-      studentCourse.setEnd_date(LocalDateTime.now().plusYears(1));
-      coursesRepository.registerStudentCourse(studentCourse);
+    if (studentDetail.getStudentCourses() != null && !studentDetail.getStudentCourses().isEmpty()) {
+      for (StudentCourses studentCourse : studentDetail.getStudentCourses()) {
+        studentCourse.setStudentId(studentDetail.getStudent().getId());
+        studentCourse.setStart_date(LocalDateTime.now());
+        studentCourse.setEnd_date(LocalDateTime.now().plusYears(1));
+        coursesRepository.registerStudentCourse(studentCourse);
+      }
     }
   }
 }

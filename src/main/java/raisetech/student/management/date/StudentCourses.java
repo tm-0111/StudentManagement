@@ -12,7 +12,7 @@ public class StudentCourses {
 
 
   private long id;
-  private long student_Id;
+  private long studentId;
   private LocalDateTime start_date;
   private LocalDateTime end_date;
   private String courseName;
