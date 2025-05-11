@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import raisetech.student.management.controller.converter.StudentConverter;
 import raisetech.student.management.date.Student;
@@ -49,6 +50,13 @@ public class StudentController {
     return "registerStudent";
   }
 
+  @GetMapping("/editStudent/{id}")
+  public String showEditFrom(@PathVariable Long id, Model model) {
+    StudentDetail studentDetail = service.getStudentDetailById(id);
+    model.addAttribute("studentDetail", studentDetail);
+    return "editStudent";
+  }
+
   //登録
   @PostMapping("/registerStudent")
   public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
@@ -58,6 +66,15 @@ public class StudentController {
     service.registerStudent(studentDetail);
     //①新規受講生情報を登録する処理
     //②コース情報も一緒に登録できるように実装する
+    return "redirect:/studentList";
+  }
+
+  @PostMapping("/updateStudent")
+  public String updateStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
+    if (result.hasErrors()) {
+      return "editStudent";
+    }
+    service.updateStudent(studentDetail);
     return "redirect:/studentList";
   }
 }

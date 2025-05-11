@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import raisetech.student.management.Repository.StudentCoursesRepository;
 import raisetech.student.management.Repository.StudentRepository;
 import raisetech.student.management.date.Student;
 import raisetech.student.management.date.StudentCourses;
@@ -14,10 +15,12 @@ import raisetech.student.management.domein.StudentDetail;
 public class StudentService {
 
   private StudentRepository repository;
+  private StudentCoursesRepository coursesRepository;
 
   @Autowired
-  public StudentService(StudentRepository repository) {
+  public StudentService(StudentRepository repository, StudentCoursesRepository coursesRepository) {
     this.repository = repository;
+    this.coursesRepository = coursesRepository;
   }
 
   public List<Student> searchStudentList() {
@@ -25,7 +28,7 @@ public class StudentService {
   }
 
   public List<StudentCourses> searchStudentCourseList() {
-    return repository.searchStudentCourses();
+    return coursesRepository.searchStudentCourses();
 
   }
 
@@ -33,10 +36,37 @@ public class StudentService {
   public void registerStudent(StudentDetail studentDetail) {
     repository.registerStudent(studentDetail.getStudent());
     for (StudentCourses studentCourse : studentDetail.getStudentCourses()) {
-      studentCourse.setStudent_id(studentDetail.getStudent().getId());
+      studentCourse.setStudent_Id(studentDetail.getStudent().getId());
       studentCourse.setStart_date(LocalDateTime.now());
       studentCourse.setEnd_date(LocalDateTime.now().plusYears(1));
-      repository.registerStudentCourse(studentCourse);
+      coursesRepository.registerStudentCourse(studentCourse);
+    }
+  }
+
+  @Transactional
+  public StudentDetail getStudentDetailById(Long id) {
+    Student student = repository.findById(id);
+    List<StudentCourses> studentCourses = coursesRepository.findByStudentId(id);
+
+    StudentDetail studentDetail = new StudentDetail();
+    studentDetail.setStudent(student);
+    studentDetail.setStudentCourses(studentCourses);
+
+    return studentDetail;
+  }
+
+  @Transactional
+  public void updateStudent(StudentDetail studentDetail) {
+    //学生情報を更新
+    repository.updateStudent(studentDetail.getStudent());
+    //古いコースを削除
+    coursesRepository.deleteByStudentId(studentDetail.getStudent().getId());
+    //新しいコースを追加
+    for (StudentCourses studentCourse : studentDetail.getStudentCourses()) {
+      studentCourse.setStudent_Id(studentDetail.getStudent().getId());
+      studentCourse.setStart_date(LocalDateTime.now());
+      studentCourse.setEnd_date(LocalDateTime.now().plusYears(1));
+      coursesRepository.registerStudentCourse(studentCourse);
     }
   }
 }

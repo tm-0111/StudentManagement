@@ -22,15 +22,18 @@
   </thead>
   <tbody>
   <tr th:each="studentDetail : ${studentList}">
-    <td th:text="${studentDetail.student.id}">1</td>
-    <td th:text="${studentDetail.student.name}">山田太郎</td>
-    <td th:text="${studentDetail.student.kanaName}">ヤマダタロウ</td>
-    <td th:text="${studentDetail.student.nickname}">タロー</td>
-    <td th:text="${studentDetail.student.email}">taro@example.com</td>
-    <td th:text="${studentDetail.student.area}">東京</td>
-    <td th:text="${studentDetail.student.age}">20</td>
-    <td th:text="${studentDetail.student.sex}">man</td>
-    <td th:text="${studentDetail.student.remark}">no</td>
+    <td>
+      <a th:href="@{/editStudent/ + ${studentDetail.student.id}}">
+        <span th:text="${studentDetail.student.name}">名前</span>
+      </a>
+    </td>
+    <td th:text="${studentDetail.student.kanaName}">カナ名</td>
+    <td th:text="${studentDetail.student.nickname}">ニックネーム</td>
+    <td th:text="${studentDetail.student.email}">メール</td>
+    <td th:text="${studentDetail.student.area}">出身</td>
+    <td th:text="${studentDetail.student.age}">年齢</td>
+    <td th:text="${studentDetail.student.sex}">性別</td>
+    <td th:text="${studentDetail.student.remark}">備考</td>
     <td>
       <span th:if="${not #lists.isEmpty(studentDetail.studentCourses)}">
         <span th:each="course : ${studentDetail.studentCourses}"
