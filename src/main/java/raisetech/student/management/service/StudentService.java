@@ -37,8 +37,8 @@ public class StudentService {
     repository.registerStudent(studentDetail.getStudent());
     for (StudentCourses studentCourse : studentDetail.getStudentCourses()) {
       studentCourse.setStudentId(studentDetail.getStudent().getId());
-      studentCourse.setStart_date(LocalDateTime.now());
-      studentCourse.setEnd_date(LocalDateTime.now().plusYears(1));
+      studentCourse.setStart_Date(LocalDateTime.now());
+      studentCourse.setEnd_Date(LocalDateTime.now().plusYears(1));
       coursesRepository.registerStudentCourse(studentCourse);
     }
   }
@@ -48,12 +48,10 @@ public class StudentService {
     Student student = repository.findById(id);
     List<StudentCourses> studentCourses = coursesRepository.findByStudentId(id);
 
-    StudentDetail studentDetail = new StudentDetail();
-    studentDetail.setStudent(student);
-    studentDetail.setStudentCourses(studentCourses);
+    return new StudentDetail(student, studentCourses);
 
-    return studentDetail;
   }
+
 
   @Transactional
   public void updateStudent(StudentDetail studentDetail) {
@@ -65,8 +63,8 @@ public class StudentService {
     if (studentDetail.getStudentCourses() != null && !studentDetail.getStudentCourses().isEmpty()) {
       for (StudentCourses studentCourse : studentDetail.getStudentCourses()) {
         studentCourse.setStudentId(studentDetail.getStudent().getId());
-        studentCourse.setStart_date(LocalDateTime.now());
-        studentCourse.setEnd_date(LocalDateTime.now().plusYears(1));
+        studentCourse.setStart_Date(LocalDateTime.now());
+        studentCourse.setEnd_Date(LocalDateTime.now().plusYears(1));
         coursesRepository.registerStudentCourse(studentCourse);
       }
     }

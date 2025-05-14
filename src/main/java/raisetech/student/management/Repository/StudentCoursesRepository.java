@@ -21,7 +21,7 @@ public interface StudentCoursesRepository {
   List<StudentCourses> findByStudentId(@Param("studentId") Long studentId);
 
   @Insert("INSERT INTO student_courses (course_name, student_id, start_date, end_date, update_at)"
-      + " VALUES (#{courseName}, #{studentId}, #{start_date}, #{end_date}, #{update})")
+      + " VALUES (#{courseName}, #{studentId}, #{start_Date}, #{end_Date}, #{update})")
 
   @Options(useGeneratedKeys = true, keyProperty = "id")
   void registerStudentCourse(StudentCourses studentCourses);

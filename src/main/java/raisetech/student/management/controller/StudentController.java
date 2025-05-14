@@ -51,7 +51,7 @@ public class StudentController {
   }
 
   @GetMapping("/editStudent/{id}")
-  public String showEditFrom(@PathVariable Long id, Model model) {
+  public String showEditForm(@PathVariable Long id, Model model) {
     StudentDetail studentDetail = service.getStudentDetailById(id);
     model.addAttribute("studentDetail", studentDetail);
     return "editStudent";

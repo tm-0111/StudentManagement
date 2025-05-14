@@ -13,8 +13,8 @@ public class StudentCourses {
 
   private long id;
   private long studentId;
-  private LocalDateTime start_date;
-  private LocalDateTime end_date;
+  private LocalDateTime start_Date;
+  private LocalDateTime end_Date;
   private String courseName;
   private LocalDateTime update;
 
