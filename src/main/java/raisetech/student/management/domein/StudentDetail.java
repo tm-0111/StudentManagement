@@ -12,8 +12,10 @@ import raisetech.student.management.date.StudentCourses;
 public class StudentDetail {
 
 
+  private long id;
+  private String name;
+
+
   private Student student;
-  private StudentCourses studentCoursesList;
-
-
+  private StudentCourses studentCourses;
 }

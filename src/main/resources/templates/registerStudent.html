@@ -9,6 +9,7 @@
   <div>
     <label for="name">名前:</label>
     <input type="text" id="name" th:field="*{student.name}" required/>
+
   </div>
   <div>
     <select id="course" th:field="*{student.course.id}">
@@ -17,6 +18,8 @@
       </option>
     </select>
   </div>
+
+
   <div>
     <button type="submit">登録</button>
   </div>

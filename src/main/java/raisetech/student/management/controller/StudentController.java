@@ -31,12 +31,25 @@ public class StudentController {
   public String getStudentList(Model model) {
     List<Student> students = service.searchStudentList();
     List<StudentCourses> studentCourses = service.searchStudentCourseList();
+    //studentCourses.forEach(sc -> System.out.println("courseName = " + sc.getCourseName()));
 
     model.addAttribute("studentList", converter.convertStudentDetails(students, studentCourses));
     return "studentList";
   }
 
+
   //学生登録
+  //新規登録画面
+  @GetMapping("/newStudent")
+  public String newStudent(Model model) {
+    StudentDetail studentDetail = new StudentDetail();
+
+    model.addAttribute("studentDetail", studentDetail);
+    return "registerStudent";
+  }
+
+  //登録
+
   @PostMapping("/registerStudent")
   public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
     //System.out.println(studentDetail.getStudent().getName() + "登録されました");
@@ -44,5 +57,12 @@ public class StudentController {
       return "registerStudent";
     }
     return "registerStudentList";
+
+    //System.out.println(studentDetail.getStudent().getName() + "登録されました");
+//保存
+    service.insertStudentWithCourses(studentDetail);
+
+    return "redirect:/studentList";
+
   }
 }

@@ -9,12 +9,16 @@ import lombok.Setter;
 
 public class StudentCourses {
 
-  private String id;
-  private String student_id;
-  private String courses_id;
+
+  private long id;
+  private long student_Id;
+  private long courses_Id;
   private LocalDate start_date;
   private LocalDate end_date;
   private String remarks;
   private boolean isDeleted;
+
   private String course_Name;
+
+
 }
