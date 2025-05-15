@@ -1,5 +1,6 @@
 package raisetech.student.management.controller;
 
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -7,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import raisetech.student.management.controller.converter.StudentConverter;
 import raisetech.student.management.date.Student;
@@ -30,22 +32,32 @@ public class StudentController {
   @GetMapping("/studentList")
   public String getStudentList(Model model) {
     List<Student> students = service.searchStudentList();
-    List<StudentCourses> studentCourses = service.searchStudentCourseList();
-    //studentCourses.forEach(sc -> System.out.println("courseName = " + sc.getCourseName()));
-
-    model.addAttribute("studentList", converter.convertStudentDetails(students, studentCourses));
+    List<StudentCourses> courses = service.searchStudentCourseList();
+    model.addAttribute("studentList", converter.convertStudentDetails(students, courses));
     return "studentList";
   }
 
 
-  //学生登録
+  @GetMapping("/studentCoursesList")
+  List<StudentCourses> getStudentCourseList() {
+    return service.searchStudentCourseList();
+  }
+
+
   //新規登録画面
   @GetMapping("/newStudent")
   public String newStudent(Model model) {
     StudentDetail studentDetail = new StudentDetail();
-
+    studentDetail.setStudentCourses((Arrays.asList(new StudentCourses())));
     model.addAttribute("studentDetail", studentDetail);
     return "registerStudent";
+  }
+
+  @GetMapping("/editStudent/{id}")
+  public String showEditForm(@PathVariable Long id, Model model) {
+    StudentDetail studentDetail = service.getStudentDetailById(id);
+    model.addAttribute("studentDetail", studentDetail);
+    return "editStudent";
   }
 
   //登録
@@ -56,13 +68,21 @@ public class StudentController {
     if (result.hasErrors()) {
       return "registerStudent";
     }
-    return "registerStudentList";
 
-    //System.out.println(studentDetail.getStudent().getName() + "登録されました");
-//保存
-    service.insertStudentWithCourses(studentDetail);
+    service.registerStudent(studentDetail);
+    return "redirect:/studentList";
+  }
 
+
+  @PostMapping("/updateStudent")
+  public String updateStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
+    if (result.hasErrors()) {
+      return "editStudent";
+    }
+    service.updateStudent(studentDetail);
     return "redirect:/studentList";
 
   }
 }
+
+
