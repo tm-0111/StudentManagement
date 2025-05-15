@@ -24,9 +24,7 @@ public class StudentService {
 
   public List<StudentCourses> searchStudentCourseList() {
     return repository.searchStudentCourses();
-
   }
-
   public void insertStudentWithCourses(StudentDetail studentDetail) {
     Student student = studentDetail.getStudent();
     repository.insertStudent(student);  //学生保存

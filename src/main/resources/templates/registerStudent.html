@@ -9,6 +9,14 @@
   <div>
     <label for="name">名前:</label>
     <input type="text" id="name" th:field="*{student.name}" required/>
+
+  </div>
+  <div>
+    <select id="course" th:field="*{student.course.id}">
+      <option th:each="course : ${studentCourses}" th:value="${courses.course.id}"
+              th:text="${course.courseName}">
+      </option>
+    </select>
   </div>
 
 
