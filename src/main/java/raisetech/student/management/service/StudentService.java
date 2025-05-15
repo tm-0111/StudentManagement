@@ -37,8 +37,8 @@ public class StudentService {
     repository.registerStudent(studentDetail.getStudent());
     for (StudentCourses studentCourse : studentDetail.getStudentCourses()) {
       studentCourse.setStudentId(studentDetail.getStudent().getId());
-      studentCourse.setStart_Date(LocalDateTime.now());
-      studentCourse.setEnd_Date(LocalDateTime.now().plusYears(1));
+      studentCourse.setStartDate(LocalDateTime.now());
+      studentCourse.setEndDate(LocalDateTime.now().plusYears(1));
       coursesRepository.registerStudentCourse(studentCourse);
     }
   }
@@ -63,8 +63,8 @@ public class StudentService {
     if (studentDetail.getStudentCourses() != null && !studentDetail.getStudentCourses().isEmpty()) {
       for (StudentCourses studentCourse : studentDetail.getStudentCourses()) {
         studentCourse.setStudentId(studentDetail.getStudent().getId());
-        studentCourse.setStart_Date(LocalDateTime.now());
-        studentCourse.setEnd_Date(LocalDateTime.now().plusYears(1));
+        studentCourse.setStartDate(LocalDateTime.now());
+        studentCourse.setEndDate(LocalDateTime.now().plusYears(1));
         coursesRepository.registerStudentCourse(studentCourse);
       }
     }
