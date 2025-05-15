@@ -28,6 +28,7 @@ public interface StudentRepository {
   List<Student> search();
 
 
+
   @Select("SELECT * FROM students WHERE id = #{id}")
   Student findById(@Param("id") Long id);
 
@@ -35,6 +36,10 @@ public interface StudentRepository {
       "UPDATE students SET name = #{name}, kana_name = #{kanaName}, nickname = #{nickname}, email = #{email},"
           + " region = #{area}, age = #{age}, gender = #{sex}, remarks = #{remark}, deleted = #{deleted} WHERE id = #{id}")
   void updateStudent(Student student);
+
+  @Insert("INSERT INTO `students` (name) VALUES (#{name})")
+  void insertStudent(Student student);
+
 
   @Insert(
       "INSERT INTO students(name, nickname, kana_name, email, region, age, gender, remarks, deleted) "

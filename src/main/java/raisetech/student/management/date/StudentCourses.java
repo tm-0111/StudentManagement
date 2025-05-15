@@ -17,5 +17,4 @@ public class StudentCourses {
   private LocalDateTime endDate;
   private String courseName;
   private LocalDateTime update;
-
 }

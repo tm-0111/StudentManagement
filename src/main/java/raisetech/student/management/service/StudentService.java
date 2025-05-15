@@ -28,6 +28,7 @@ public class StudentService {
   }
 
   public List<StudentCourses> searchStudentCourseList() {
+
     return coursesRepository.searchStudentCourses();
 
   }
