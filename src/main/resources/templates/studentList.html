@@ -8,6 +8,7 @@
 <table border="1">
   <thead>
   <tr>
+    <th>ID</th>
     <th>名前</th>
     <th>カナ名</th>
     <th>ニックネーム</th>
@@ -21,10 +22,10 @@
   </thead>
   <tbody>
   <tr th:each="studentDetail : ${studentList}">
+    <td th:text="${studentDetail.student.id}">ID</td>
     <td>
-      <a th:href="@{'/editStudent/' + ${studentDetail.student.id}}">
-        <span th:text="${studentDetail.student.name}">名前</span>
-      </a>
+      <a href="/studentList" th:href="@{/student/{id}(id=${studentDetail.student.id})}"
+         th:text="${studentDetail.student.name}">名前</a>
     </td>
     <td th:text="${studentDetail.student.kanaName}">カナ名</td>
     <td th:text="${studentDetail.student.nickname}">ニックネーム</td>
@@ -38,7 +39,6 @@
         <span th:each="course : ${studentDetail.studentCourses}"
               th:text="${course.courseName}">コース名</span>
       </span>
-      <span th:if="${#lists.isEmpty(studentDetail.studentCourses)}">未登録</span>
     </td>
   </tr>
   </tbody>

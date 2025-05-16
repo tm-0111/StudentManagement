@@ -37,12 +37,12 @@ public class StudentController {
     return "studentList";
   }
 
-
-  @GetMapping("/studentCoursesList")
-  List<StudentCourses> getStudentCourseList() {
-    return service.searchStudentCourseList();
+  @GetMapping("/student/{id}")
+  public String getStudent(@PathVariable String id, Model model) {
+    StudentDetail studentDetail = service.searchStudent(id);
+    model.addAttribute("studentDetail", studentDetail);
+    return "editStudent";
   }
-
 
   //新規登録画面
   @GetMapping("/newStudent")
@@ -53,15 +53,7 @@ public class StudentController {
     return "registerStudent";
   }
 
-  @GetMapping("/editStudent/{id}")
-  public String showEditForm(@PathVariable Long id, Model model) {
-    StudentDetail studentDetail = service.getStudentDetailById(id);
-    model.addAttribute("studentDetail", studentDetail);
-    return "editStudent";
-  }
-
   //登録
-
   @PostMapping("/registerStudent")
   public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
     //System.out.println(studentDetail.getStudent().getName() + "登録されました");
@@ -77,7 +69,7 @@ public class StudentController {
   @PostMapping("/updateStudent")
   public String updateStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
     if (result.hasErrors()) {
-      return "editStudent";
+      return "updateStudent";
     }
     service.updateStudent(studentDetail);
     return "redirect:/studentList";
