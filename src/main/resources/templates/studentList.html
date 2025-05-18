@@ -18,6 +18,7 @@
     <th>性別</th>
     <th>備考</th>
     <th>コース</th>
+    <th>キャンセル</th>
   </tr>
   </thead>
   <tbody>
@@ -39,6 +40,9 @@
         <span th:each="course : ${studentDetail.studentCourses}"
               th:text="${course.courseName}">コース名</span>
       </span>
+    </td>
+    <td>
+      <input type="checkbox" th:checked="${studentDetail.student.deleted}"/>
     </td>
   </tr>
   </tbody>

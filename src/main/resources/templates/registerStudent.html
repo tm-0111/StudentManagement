@@ -11,13 +11,13 @@
     <input type="text" id="name" th:field="*{student.name}" required/>
 
   </div>
-  <div>
-    <select id="course" th:field="*{student.course.id}">
-      <option th:each="course : ${studentCourses}" th:value="${courses.course.id}"
-              th:text="${course.courseName}">
-      </option>
-    </select>
-  </div>
+  <!--  <div>-->
+  <!--    <select id="course" th:field="*{student.course.id}">-->
+  <!--      <option th:each="course : ${studentCourses}" th:value="${courses.course.id}"-->
+  <!--              th:text="${course.courseName}">-->
+  <!--      </option>-->
+  <!--    </select>-->
+  <!--  </div>-->
   <div>
     <label for="kanaName">カナ名</label>
     <input type="text" id="kanaName" th:field="*{student.kanaName}" required/>
@@ -51,6 +51,10 @@
       受講コース名: </label>
     <input type="text" id="courseName" th:id="studentCourses.__${stat.index}__.courseName"
            th:field="*{studentCourses[__${stat.index}__].courseName}">
+  </div>
+  <div>
+    <label for="deleted">キャンセル</label>
+    <input type="checkbox" id="deleted" th:field="*{student.deleted}"/>
   </div>
   <div>
     <button type="submit">登録</button>
