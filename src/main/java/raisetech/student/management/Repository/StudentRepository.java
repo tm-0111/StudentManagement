@@ -13,11 +13,8 @@ import java.util.List;
 public interface StudentRepository {
 
     /**
-     * 受講生の全件検索を行います。
-     *
      * @return 受講生一覧（全件）
      */
-    @Select("SELECT * FROM students")
     List<Student> search();
 
     /**
@@ -25,7 +22,6 @@ public interface StudentRepository {
      * @param id　受講生ID
      * @return　受講生
      */
-    @Select("SELECT * FROM students WHERE id = #{id}")
     Student searchStudent(String id);
 
     /**
@@ -80,7 +76,7 @@ public interface StudentRepository {
     @Update("UPDATE students_courses SET courses_name = #{courseName} WHERE id = #{id}")
     void updateStudentCourse(StudentCourse studentCourse);
 
-   @Delete("DELETE FROM students courses WHERE student_id = #{studentId}")
-   void deleteByStudentId(@Param("student_id") String studentId);
+  // @Delete("DELETE FROM students courses WHERE student_id = #{studentId}")
+   //void deleteByStudentId(@Param("student_id") String studentId);
 
 }
