@@ -4,8 +4,6 @@ import org.springframework.stereotype.Component;
 import raisetech.student.management.date.Student;
 import raisetech.student.management.date.StudentCourse;
 import raisetech.student.management.domein.StudentDetail;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,18 +23,18 @@ public class StudentConverter {
      */
     public List<StudentDetail> convertStudentDetails(List<Student> studentList,
                                                      List<StudentCourse> studentCoursesList) {
-        List<StudentDetail> studentDetails = new ArrayList<>();
-        studentList.forEach(student -> {
-            StudentDetail studentDetail = new StudentDetail();
-            studentDetail.setStudent(student);
+        return studentList.stream()
+                .map(student -> {
+                    StudentDetail studentDetail = new StudentDetail();
+                    studentDetail.setStudent(student);
 
-            List<StudentCourse>convertStudentCoursesList = studentCoursesList.stream()
-                            .filter(studentCourse -> student.getId().equals(studentCourse.getStudentId()))
-                                    .collect(Collectors.toList());
+                    List<StudentCourse> filteredCourses = studentCoursesList.stream()
+                            .filter(course -> student.getId().equals(course.getStudentId()))
+                            .collect(Collectors.toList());
 
-            studentDetail.setStudentCourseList(convertStudentCoursesList);
-            studentDetails.add(studentDetail);
-        });
-        return studentDetails;
+                    studentDetail.setStudentCourseList(filteredCourses);
+                    return studentDetail;
+                })
+                .collect(Collectors.toList());
     }
 }
