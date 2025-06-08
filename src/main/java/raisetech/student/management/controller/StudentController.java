@@ -1,11 +1,14 @@
 package raisetech.student.management.controller;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import raisetech.student.management.domein.StudentDetail;
+import raisetech.student.management.exception.TestException;
 import raisetech.student.management.service.StudentService;
 
 import java.util.List;
@@ -34,10 +37,12 @@ public class StudentController {
     public List<StudentDetail> getStudentList() {
         return service.searchStudentList();
     }
-
+@GetMapping("/test")
+public String  throwTestException() throws TestException {
+        throw new TestException("testです。");
+}
     /**
-     *  受講生詳細検索です。
-     *  IDに紐づく任意の受講生の情報を取得します。
+     *  受講生詳細検索です。IDに紐づく任意の受講生の情報を取得します。
      * @param id　受講生ID
      * @return　受講生
      */
@@ -52,7 +57,7 @@ public class StudentController {
      * @return　実行結果を返します。
      */
     @PostMapping("/registerStudent")
-    public ResponseEntity<StudentDetail> registerStudent(@RequestBody StudentDetail studentDetail) {
+    public ResponseEntity<StudentDetail> registerStudent(@RequestBody @Valid StudentDetail studentDetail) {
         StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
         return ResponseEntity.ok(responseStudentDetail);
     }
@@ -64,7 +69,7 @@ public class StudentController {
      * @return　実行結果
      */
     @PutMapping("/updateStudent")
-    public ResponseEntity<String> updateStudent(@RequestBody StudentDetail studentDetail) {
+    public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentDetail studentDetail) {
         service.updateStudent(studentDetail);
         return ResponseEntity.ok("更新処理が成功しました。");
     }
