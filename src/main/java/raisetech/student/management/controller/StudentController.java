@@ -22,7 +22,6 @@ public class StudentController {
     @Autowired
     public StudentController(StudentService service) {
         this.service = service;
-
     }
 
     /**

@@ -1,5 +1,6 @@
 package raisetech.student.management.domein;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
