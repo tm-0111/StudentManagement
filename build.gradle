@@ -29,13 +29,20 @@ dependencies {
     //thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
-    //便利機能、ユーティリティ
-    implementation 'org.apache.commons:commons-lang3:3.14.0'
     //Validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    //OpenAPI　Generator
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+
+    //便利機能、ユーティリティ
+    implementation 'org.apache.commons:commons-lang3:3.14.0'
+
+
     // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
     //MySQLドライバ
     runtimeOnly 'com.mysql:mysql-connector-j'
     //MyBatis
