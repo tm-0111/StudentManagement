@@ -1,10 +1,13 @@
 package raisetech.student.management.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import raisetech.student.management.domein.StudentDetail;
@@ -46,8 +49,9 @@ public String  throwTestException() throws TestException {
      * @param id　受講生ID
      * @return　受講生
      */
+    @Operation(summary = "受講生検索", description = "受講生を検索します。")
     @GetMapping("/student/{id}")
-    public StudentDetail getStudent(@PathVariable @Size(min =1, max=3)String id) {
+    public StudentDetail getStudent(@PathVariable @Size(min =1, max=3) @Pattern(regexp = "\\d+", message = "IDは数字のみ入力可能です")String id) {
         return service.searchStudent(id);
     }
 
@@ -56,6 +60,7 @@ public String  throwTestException() throws TestException {
      * @param studentDetail　受講生詳細
      * @return　実行結果を返します。
      */
+    @Operation(summary = "受講生登録", description = "受講生を登録します。")
     @PostMapping("/registerStudent")
     public ResponseEntity<StudentDetail> registerStudent(@RequestBody @Valid StudentDetail studentDetail) {
         StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
@@ -72,6 +77,14 @@ public String  throwTestException() throws TestException {
     public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentDetail studentDetail) {
         service.updateStudent(studentDetail);
         return ResponseEntity.ok("更新処理が成功しました。");
+    }
+    @GetMapping("/exception")
+    public ResponseEntity<String> throwException() throws NotFoundException{
+        throw  new NotFoundException("このAPIは現在使用できません。古いURLとなってます。");
+    }
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> handleNotFoundExcption(NotFoundException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 }
 
