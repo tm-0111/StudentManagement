@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
 import raisetech.student.management.Repository.StudentRepository;
 import raisetech.student.management.controller.converter.StudentConverter;
 import raisetech.student.management.date.Student;
 import raisetech.student.management.date.StudentCourse;
 import raisetech.student.management.domein.StudentDetail;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +33,20 @@ class StudentServiceTest {
     @BeforeEach
     void before() {
         sut = new StudentService(repository, converter);
+    }
+
+    @Test
+    void 受講生詳細の登録_初期化処理が行われること(){
+        String id = "999";
+        Student student = new Student();
+        student.setId(id);
+        StudentCourse studentCourse = new StudentCourse();
+
+        sut.initStudentsCourse(studentCourse, student);
+
+        assertEquals(id, studentCourse.getStudentId());
+        assertEquals(LocalDateTime.now().getHour(),studentCourse.getCourseStartAt().getHour());
+        assertEquals(LocalDateTime.now().plusYears(1).getYear(), studentCourse.getCourseEndAt().getYear());
     }
 
     @Test
@@ -66,7 +80,6 @@ class StudentServiceTest {
 
         verify(repository).searchStudent("1");
         verify(repository).searchStudentCourse("1");
-
         Assertions.assertNotNull(result);
     }
 

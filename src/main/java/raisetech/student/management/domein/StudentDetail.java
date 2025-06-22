@@ -21,6 +21,6 @@ public class StudentDetail {
 @Valid
 @NotNull
     private Student student;
-    private List<@NotNull StudentCourse> studentCourseList;
+    private List<StudentCourse> studentCourseList;
 }
 

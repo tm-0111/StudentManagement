@@ -23,7 +23,7 @@ public class StudentService {
     private StudentConverter converter;
 
     @Autowired
-    public StudentService(StudentRepository repository ,StudentConverter converter) {
+    public StudentService(StudentRepository repository , StudentConverter converter) {
         this.repository = repository;
         this.converter = converter;
     }
@@ -76,7 +76,7 @@ public class StudentService {
      * @param studentCourse　受講生コース情報
      * @param student　受講生
      */
-    private void initStudentsCourse(StudentCourse studentCourse, Student student) {
+    public void initStudentsCourse(StudentCourse studentCourse, Student student) {
         LocalDateTime now = LocalDateTime.now();
 
         studentCourse.setStudentId(student.getId());
