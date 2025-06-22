@@ -3,6 +3,8 @@ package raisetech.student.management.controller;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import org.apache.ibatis.javassist.NotFoundException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.mockito.Mockito.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -145,7 +148,6 @@ class StudentControllerTest {
 
         verify(service, times(1)).registerStudent(any());
     }
-
     @Test
     void 受講生詳細の更新ができて空で返ってくること() throws Exception {
         mockMvc.perform(put("/updateStudent")
@@ -178,7 +180,6 @@ class StudentControllerTest {
 
         verify(service, times(1)).updateStudent(any());
     }
-
     @Test
     void 使用できないAPIにアクセスすると400とエラーメッセージが返る() throws Exception {
         mockMvc.perform(get("/exception"))
@@ -186,3 +187,4 @@ class StudentControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("このAPIは現在使用できません。古いURLとなってます。"));
     }
+   }
