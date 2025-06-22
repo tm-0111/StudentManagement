@@ -100,7 +100,6 @@ class StudentControllerTest {
         mockMvc.perform(get("/student/{id}", id))
                 .andExpect(status().isOk());
     }
-
     @Test
     void 受講生詳細の登録が実行できて空で返ってくること() throws Exception {
         //リクエストデータは適切に構築して入力チェックの検証も兼ねてます。
@@ -158,7 +157,6 @@ class StudentControllerTest {
 
         verify(service, times(1)).updateStudent(any());
     }
-
     @Test
     void 使用できないAPIにアクセスすると400とエラーメッセージが返る() throws Exception {
         mockMvc.perform(get("/exception"))

@@ -3,13 +3,8 @@ package raisetech.student.management.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
