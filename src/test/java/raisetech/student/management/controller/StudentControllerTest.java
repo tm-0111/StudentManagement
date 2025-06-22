@@ -106,26 +106,27 @@ class StudentControllerTest {
         //リクエストデータは適切に構築して入力チェックの検証も兼ねてます。
         //本来であれば返りは登録されたデータが入るが、モック化すると意味がないため、レスポンスは作らない。
         mockMvc.perform(post("/registerStudent")
-                .contentType(MediaType.APPLICATION_JSON).content("{"
-                                        + "\"student\": {"
-                                        + "\"name\": \"山田太郎\","
-                                        + "\"kanaName\": \"ヤマダタロウ\","
-                                        + "\"nickname\": \"タロ\","
-                                        + "\"email\": \"taro@example.com\","
-                                        + "\"area\": \"東京\","
-                                        + "\"age\": 25,"
-                                        + "\"sex\": \"男性\","
-                                        + "\"remark\": \"\""
-                                        + "},"
-                                        + "\"studentCourseList\": ["
-                                        + "{ \"courseName\": \"JAVAコース\" }"
-                                        + "]"
-                                        + "}")
+                        .contentType(MediaType.APPLICATION_JSON).content("{"
+                                + "\"student\": {"
+                                + "\"name\": \"山田太郎\","
+                                + "\"kanaName\": \"ヤマダタロウ\","
+                                + "\"nickname\": \"タロ\","
+                                + "\"email\": \"taro@example.com\","
+                                + "\"area\": \"東京\","
+                                + "\"age\": 25,"
+                                + "\"sex\": \"男性\","
+                                + "\"remark\": \"\""
+                                + "},"
+                                + "\"studentCourseList\": ["
+                                + "{ \"courseName\": \"JAVAコース\" }"
+                                + "]"
+                                + "}")
                 )
                 .andExpect(status().isOk());
 
         verify(service, times(1)).registerStudent(any());
     }
+
     @Test
     void 受講生詳細の更新ができて空で返ってくること() throws Exception {
         mockMvc.perform(put("/updateStudent")
@@ -166,4 +167,4 @@ class StudentControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("このAPIは現在使用できません。古いURLとなってます。"));
     }
-   }
+}
