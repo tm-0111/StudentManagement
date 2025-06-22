@@ -68,7 +68,6 @@ public String  throwTestException() throws TestException {
      * @return　実行結果を返します。
      */
     @Operation(summary = "受講生登録", description = "受講生を登録します。")
-    @Operation(summary = "受講生登録", description = "受講生を登録します。")
     @ApiResponse(responseCode = "200", description = "登録が成功しました。")
     @PostMapping("/registerStudent")
     public ResponseEntity<StudentDetail> registerStudent(@RequestBody @Valid StudentDetail studentDetail) {
