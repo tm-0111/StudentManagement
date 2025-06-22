@@ -41,7 +41,6 @@ class StudentControllerTest {
 
         mockMvc.perform(get("/studentList"))
                 .andExpect(status().isOk());
-        // .andExpect(content().json("[\"student\":null,\"studentCourseList\":null]"));
 
         verify(service, times(1)).searchStudentList();
     }

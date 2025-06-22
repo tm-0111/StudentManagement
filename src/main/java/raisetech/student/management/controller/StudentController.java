@@ -23,7 +23,6 @@ import java.util.List;
 public class StudentController {
     private StudentService service;
 
-
     @Autowired
     public StudentController(StudentService service) {
         this.service = service;
