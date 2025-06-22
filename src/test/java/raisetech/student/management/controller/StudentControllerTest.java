@@ -158,7 +158,6 @@ class StudentControllerTest {
 
         verify(service, times(1)).updateStudent(any());
     }
-
     @Test
     void 使用できないAPIにアクセスすると400とエラーメッセージが返る() throws Exception {
         mockMvc.perform(get("/exception"))
