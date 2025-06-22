@@ -3,8 +3,6 @@ package raisetech.student.management.controller;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import org.apache.ibatis.javassist.NotFoundException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,11 +18,9 @@ import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -107,6 +103,8 @@ class StudentControllerTest {
 
     @Test
     void 受講生詳細の登録が実行できて空で返ってくること() throws Exception {
+        //リクエストデータは適切に構築して入力チェックの検証も兼ねてます。
+        //本来であれば返りは登録されたデータが入るが、モック化すると意味がないため、レスポンスは作らない。
         mockMvc.perform(post("/registerStudent")
                 .contentType(MediaType.APPLICATION_JSON).content("{"
                                         + "\"student\": {"
@@ -128,6 +126,38 @@ class StudentControllerTest {
 
         verify(service, times(1)).registerStudent(any());
     }
+    @Test
+    void 受講生詳細の更新ができて空で返ってくること() throws Exception {
+        mockMvc.perform(put("/updateStudent")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(
+                                "{"
+                                        + "\"student\": {"
+                                        + "\"name\": \"山田太郎\","
+                                        + "\"kanaName\": \"ヤマダタロウ\","
+                                        + "\"nickname\": \"タロ\","
+                                        + "\"email\": \"taro@example.com\","
+                                        + "\"area\": \"東京\","
+                                        + "\"age\": 25,"
+                                        + "\"sex\": \"男性\","
+                                        + "\"remark\": \"\""
+                                        + "},"
+                                        + "\"studentCourseList\": ["
+                                        + "{"
+                                        + "\"id\": \"1\","
+                                        + "\"studentId\": \"10\","
+                                        + "\"courseName\": \"JAVAコース\","
+                                        + "\"courseStartAt\": \"2024-01-27T10:50:39.833614\","
+                                        + "\"courseEndAt\": \"2025-04-27T10:50:39.833614\""
+                                        + "}"
+                                        + "]"
+                                        + "}"
+                        ))
+                .andExpect(status().isOk())
+                .andExpect(content().string("更新処理が成功しました。"));
+
+        verify(service, times(1)).updateStudent(any());
+    }
 
     @Test
     void 使用できないAPIにアクセスすると400とエラーメッセージが返る() throws Exception {
@@ -136,4 +166,4 @@ class StudentControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("このAPIは現在使用できません。古いURLとなってます。"));
     }
-}
+   }
