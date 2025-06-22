@@ -8,9 +8,7 @@ import jakarta.validation.constraints.Pattern;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-
 import jakarta.validation.Valid;
 
 
@@ -18,6 +16,7 @@ import jakarta.validation.constraints.Size;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import raisetech.student.management.domein.StudentDetail;
@@ -63,11 +62,17 @@ public String  throwTestException() throws TestException {
     @GetMapping("/student/{id}")
     public StudentDetail getStudent(@PathVariable @Size(min =1, max=3) @Pattern(regexp = "\\d+", message = "IDは数字のみ入力可能です")String id) {
 
+
+    @Operation(summary = "受講生検索", description = "受講生を検索します。")
+    @GetMapping("/student/{id}")
+    public StudentDetail getStudent(@PathVariable @Size(min =1, max=3) @Pattern(regexp = "\\d+", message = "IDは数字のみ入力可能です")String id) {
+
     @Operation(summary = "受講生詳細取得", description = "指定したIDの受講生情報を取得します")
     @ApiResponse(responseCode = "200", description = "正常に取得されました。")
     @GetMapping("/student/{id}")
     public StudentDetail getStudent(
             @PathVariable @NotBlank @Pattern(regexp = "^\\d+$") String id) {
+
 
         return service.searchStudent(id);
     }
