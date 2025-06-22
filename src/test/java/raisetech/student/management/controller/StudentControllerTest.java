@@ -41,6 +41,7 @@ class StudentControllerTest {
 
         mockMvc.perform(get("/studentList"))
                 .andExpect(status().isOk());
+
         // .andExpect(content().json("[\"student\":null,\"studentCourseList\":null]"));
 
         verify(service, times(1)).searchStudentList();
@@ -100,11 +101,13 @@ class StudentControllerTest {
         mockMvc.perform(get("/student/{id}", id))
                 .andExpect(status().isOk());
     }
+
     @Test
     void 受講生詳細の登録が実行できて空で返ってくること() throws Exception {
         //リクエストデータは適切に構築して入力チェックの検証も兼ねてます。
         //本来であれば返りは登録されたデータが入るが、モック化すると意味がないため、レスポンスは作らない。
         mockMvc.perform(post("/registerStudent")
+
                 .contentType(MediaType.APPLICATION_JSON).content("{"
                                         + "\"student\": {"
                                         + "\"name\": \"山田太郎\","
@@ -120,11 +123,29 @@ class StudentControllerTest {
                                         + "{ \"courseName\": \"JAVAコース\" }"
                                         + "]"
                                         + "}")
+
+                        .contentType(MediaType.APPLICATION_JSON).content("{"
+                                + "\"student\": {"
+                                + "\"name\": \"山田太郎\","
+                                + "\"kanaName\": \"ヤマダタロウ\","
+                                + "\"nickname\": \"タロ\","
+                                + "\"email\": \"taro@example.com\","
+                                + "\"area\": \"東京\","
+                                + "\"age\": 25,"
+                                + "\"sex\": \"男性\","
+                                + "\"remark\": \"\""
+                                + "},"
+                                + "\"studentCourseList\": ["
+                                + "{ \"courseName\": \"JAVAコース\" }"
+                                + "]"
+                                + "}")
+
                 )
                 .andExpect(status().isOk());
 
         verify(service, times(1)).registerStudent(any());
     }
+
     @Test
     void 受講生詳細の更新ができて空で返ってくること() throws Exception {
         mockMvc.perform(put("/updateStudent")
@@ -157,6 +178,7 @@ class StudentControllerTest {
 
         verify(service, times(1)).updateStudent(any());
     }
+
     @Test
     void 使用できないAPIにアクセスすると400とエラーメッセージが返る() throws Exception {
         mockMvc.perform(get("/exception"))
@@ -164,4 +186,3 @@ class StudentControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("このAPIは現在使用できません。古いURLとなってます。"));
     }
-   }
