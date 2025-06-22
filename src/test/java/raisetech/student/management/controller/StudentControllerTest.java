@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import raisetech.student.management.date.Student;
 import raisetech.student.management.domein.StudentDetail;
@@ -23,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -30,25 +32,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class StudentControllerTest {
 
-        @Autowired
-        private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-        @MockBean
-        private StudentService service;
-        private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    @MockBean
+    private StudentService service;
+    private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
-        @Test
-        void 受講生詳細の一覧検索が実行できて空のリストが返ってくること() throws Exception{
-            when(service.searchStudentList()).thenReturn(List.of());
-
-         mockMvc.perform(get("/studentList"))
-                 .andExpect(status().isOk());
-                // .andExpect(content().json("[\"student\":null,\"studentCourseList\":null]"));
-
-         verify(service, times(1)).searchStudentList();
-    }
     @Test
-    void 受講生詳細の受講生で適切な値を入力した時に入力チェックに異常が発生しないこと(){
+    void 受講生詳細の一覧検索が実行できて空のリストが返ってくること() throws Exception {
+        when(service.searchStudentList()).thenReturn(List.of());
+
+        mockMvc.perform(get("/studentList"))
+                .andExpect(status().isOk());
+        // .andExpect(content().json("[\"student\":null,\"studentCourseList\":null]"));
+
+        verify(service, times(1)).searchStudentList();
+    }
+
+    @Test
+    void 受講生詳細の受講生で適切な値を入力した時に入力チェックに異常が発生しないこと() {
         Student student = new Student();
         student.setId("2");
         student.setName("佐藤花子");
@@ -65,8 +68,9 @@ class StudentControllerTest {
 
         assertThat(violations.size()).isEqualTo(0);
     }
+
     @Test
-    void 受講生詳細の受講生でIDに数字以外を用いた時にチェックに掛かること(){
+    void 受講生詳細の受講生でIDに数字以外を用いた時にチェックに掛かること() {
         Student student = new Student();
         student.setId("テストです");
         student.setName("佐藤花子");
@@ -83,8 +87,9 @@ class StudentControllerTest {
         assertThat(violations).extracting("message")
                 .containsOnly("数字のみ入力するようにしてください。");
     }
+
     @Test
-    void 受講生IDで検索し正常に返ること() throws Exception{
+    void 受講生IDで検索し正常に返ること() throws Exception {
         String id = "999";
         Student student = new Student();
         student.setId(id);
@@ -96,12 +101,37 @@ class StudentControllerTest {
 
         when(service.searchStudent(id)).thenReturn(detail);
 
-        mockMvc.perform(get("/student/{id}",id))
+        mockMvc.perform(get("/student/{id}", id))
                 .andExpect(status().isOk());
     }
+
     @Test
-    void 使用できないAPIにアクセスすると400とエラーメッセージが返る() throws Exception{
-            mockMvc.perform(get("/exception"))
+    void 受講生詳細の登録が実行できて空で返ってくること() throws Exception {
+        mockMvc.perform(post("/registerStudent")
+                .contentType(MediaType.APPLICATION_JSON).content("{"
+                                        + "\"student\": {"
+                                        + "\"name\": \"山田太郎\","
+                                        + "\"kanaName\": \"ヤマダタロウ\","
+                                        + "\"nickname\": \"タロ\","
+                                        + "\"email\": \"taro@example.com\","
+                                        + "\"area\": \"東京\","
+                                        + "\"age\": 25,"
+                                        + "\"sex\": \"男性\","
+                                        + "\"remark\": \"\""
+                                        + "},"
+                                        + "\"studentCourseList\": ["
+                                        + "{ \"courseName\": \"JAVAコース\" }"
+                                        + "]"
+                                        + "}")
+                )
+                .andExpect(status().isOk());
+
+        verify(service, times(1)).registerStudent(any());
+    }
+
+    @Test
+    void 使用できないAPIにアクセスすると400とエラーメッセージが返る() throws Exception {
+        mockMvc.perform(get("/exception"))
 
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("このAPIは現在使用できません。古いURLとなってます。"));
