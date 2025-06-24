@@ -123,23 +123,6 @@ class StudentControllerTest {
                                         + "{ \"courseName\": \"JAVAコース\" }"
                                         + "]"
                                         + "}")
-
-                        .contentType(MediaType.APPLICATION_JSON).content("{"
-                                + "\"student\": {"
-                                + "\"name\": \"山田太郎\","
-                                + "\"kanaName\": \"ヤマダタロウ\","
-                                + "\"nickname\": \"タロ\","
-                                + "\"email\": \"taro@example.com\","
-                                + "\"area\": \"東京\","
-                                + "\"age\": 25,"
-                                + "\"sex\": \"男性\","
-                                + "\"remark\": \"\""
-                                + "},"
-                                + "\"studentCourseList\": ["
-                                + "{ \"courseName\": \"JAVAコース\" }"
-                                + "]"
-                                + "}")
-
                 )
                 .andExpect(status().isOk());
 
@@ -185,4 +168,5 @@ class StudentControllerTest {
 
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("このAPIは現在使用できません。古いURLとなってます。"));
+    }
     }
