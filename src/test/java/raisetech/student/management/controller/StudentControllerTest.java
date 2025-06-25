@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import raisetech.student.management.date.Student;
 import raisetech.student.management.domein.StudentDetail;
@@ -31,7 +32,7 @@ class StudentControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private StudentService service;
     private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 

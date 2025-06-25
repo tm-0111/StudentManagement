@@ -18,12 +18,12 @@
     <select id="searchStudentCourse" resultType="raisetech.student.management.date.StudentCourse">
         SELECT * FROM students_courses WHERE id = #{id}
     </select>
-<insert id="registerStudent" parameterType="raisetech.student.management.date.Student" statementType="PREPARED" useGeneratedKeys = "true" keyProperty = "studentId">
+<insert id="registerStudent" parameterType="raisetech.student.management.date.Student" statementType="PREPARED" useGeneratedKeys = "true" keyProperty = "id">
     INSERT INTO students(name, nickname, kana_name, email, area, age, sex, remark, is_deleted )
     VALUES (#{name}, #{nickname}, #{kanaName}, #{email}, #{area}, #{age}, #{sex}, #{remark}, false)
         </insert>
 
-    <insert id="registerStudentCourse" useGeneratedKeys = "true" parameterType="raisetech.student.management.date.StudentCourse" statementType="PREPARED" keyProperty = "id">
+    <insert id="registerStudentCourse" useGeneratedKeys = "true" parameterType="raisetech.student.management.date.StudentCourse" statementType="PREPARED" keyProperty = "studentId">
         INSERT INTO students_courses ( student_id, course_name, course_start_at, course_end_at)
         VALUES (#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt})
     </insert>
