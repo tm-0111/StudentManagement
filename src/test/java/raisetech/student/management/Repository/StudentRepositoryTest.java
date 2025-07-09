@@ -5,6 +5,7 @@ import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import raisetech.student.management.date.Student;
 import raisetech.student.management.date.StudentCourse;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
