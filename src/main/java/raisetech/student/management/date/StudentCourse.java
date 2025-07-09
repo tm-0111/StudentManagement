@@ -19,4 +19,8 @@ public class StudentCourse {
     private LocalDateTime courseStartAt;
     private LocalDateTime courseEndAt;
     private LocalDateTime updateAt;
+
+    @NotBlank(message = "申し込み状況は必須です")
+    private String applicationStatus;
 }
+
