@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import raisetech.student.management.date.Student;
 import raisetech.student.management.domein.StudentDetail;
@@ -31,7 +32,7 @@ class StudentControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private StudentService service;
     private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
@@ -108,6 +109,22 @@ class StudentControllerTest {
         //本来であれば返りは登録されたデータが入るが、モック化すると意味がないため、レスポンスは作らない。
         mockMvc.perform(post("/registerStudent")
 
+                .contentType(MediaType.APPLICATION_JSON).content("{"
+                                        + "\"student\": {"
+                                        + "\"name\": \"山田太郎\","
+                                        + "\"kanaName\": \"ヤマダタロウ\","
+                                        + "\"nickname\": \"タロ\","
+                                        + "\"email\": \"taro@example.com\","
+                                        + "\"area\": \"東京\","
+                                        + "\"age\": 25,"
+                                        + "\"sex\": \"男性\","
+                                        + "\"remark\": \"\""
+                                        + "},"
+                                        + "\"studentCourseList\": ["
+                                        + "{ \"courseName\": \"JAVAコース\" }"
+                                        + "]"
+                                        + "}")
+
                         .contentType(MediaType.APPLICATION_JSON).content("{"
                                 + "\"student\": {"
                                 + "\"name\": \"山田太郎\","
@@ -123,6 +140,7 @@ class StudentControllerTest {
                                 + "{ \"courseName\": \"JAVAコース\" }"
                                 + "]"
                                 + "}")
+
                 )
                 .andExpect(status().isOk());
 
@@ -169,4 +187,7 @@ class StudentControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("このAPIは現在使用できません。古いURLとなってます。"));
     }
+
+    }
+
 }

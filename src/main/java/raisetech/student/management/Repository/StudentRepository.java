@@ -1,11 +1,8 @@
 package raisetech.student.management.Repository;
-
 import org.apache.ibatis.annotations.*;
 import raisetech.student.management.date.Student;
 import raisetech.student.management.date.StudentCourse;
-
 import java.util.List;
-
 /**
  * 受講生テーブルと受講生情報テーブルと紐づくRepositoryです。
  */
@@ -14,7 +11,6 @@ public interface StudentRepository {
     /**
      * @return 受講生一覧（全件）
      */
-
     List<Student> search();
 
     /**
