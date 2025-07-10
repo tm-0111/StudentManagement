@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -109,21 +108,21 @@ class StudentControllerTest {
         //本来であれば返りは登録されたデータが入るが、モック化すると意味がないため、レスポンスは作らない。
         mockMvc.perform(post("/registerStudent")
 
-                .contentType(MediaType.APPLICATION_JSON).content("{"
-                                        + "\"student\": {"
-                                        + "\"name\": \"山田太郎\","
-                                        + "\"kanaName\": \"ヤマダタロウ\","
-                                        + "\"nickname\": \"タロ\","
-                                        + "\"email\": \"taro@example.com\","
-                                        + "\"area\": \"東京\","
-                                        + "\"age\": 25,"
-                                        + "\"sex\": \"男性\","
-                                        + "\"remark\": \"\""
-                                        + "},"
-                                        + "\"studentCourseList\": ["
-                                        + "{ \"courseName\": \"JAVAコース\" }"
-                                        + "]"
-                                        + "}")
+                        .contentType(MediaType.APPLICATION_JSON).content("{"
+                                + "\"student\": {"
+                                + "\"name\": \"山田太郎\","
+                                + "\"kanaName\": \"ヤマダタロウ\","
+                                + "\"nickname\": \"タロ\","
+                                + "\"email\": \"taro@example.com\","
+                                + "\"area\": \"東京\","
+                                + "\"age\": 25,"
+                                + "\"sex\": \"男性\","
+                                + "\"remark\": \"\""
+                                + "},"
+                                + "\"studentCourseList\": ["
+                                + "{ \"courseName\": \"JAVAコース\" }"
+                                + "]"
+                                + "}")
 
                         .contentType(MediaType.APPLICATION_JSON).content("{"
                                 + "\"student\": {"
@@ -187,7 +186,4 @@ class StudentControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("このAPIは現在使用できません。古いURLとなってます。"));
     }
-
-    }
-
 }
