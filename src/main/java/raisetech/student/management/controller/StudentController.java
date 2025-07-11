@@ -89,6 +89,14 @@ public String  throwTestException() throws TestException {
     public ResponseEntity<String> handleNotFoundExcption(NotFoundException ex){
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
+    @PutMapping("/studentCourses/{studentId}/status")
+    public ResponseEntity<String>updateApplicationStatus(
+            @PathVariable String studentId,
+            @RequestParam ApplicationStatus newStatus){
+
+        service.updateCourseStatus(studentId, newStatus);
+        return ResponseEntity.ok("更新しました");
+    }
 }
 
 

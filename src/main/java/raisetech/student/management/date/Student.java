@@ -1,10 +1,7 @@
 package raisetech.student.management.date;
 
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Getter
@@ -33,9 +30,10 @@ public class Student {
     @Size(max = 20, message = "地域名は20文字以内で入力してください")
     private String area;
 
+    @Min(value = 0, message = "年齢は0以上を入力してください")
     private int age;
 
-    @Pattern(regexp = "^(男性｜女性｜その他｜回答しない)?$",message = "性別はいずれかを入力してください")
+    @Pattern(regexp = "^(男性|女性|その他|回答しない)?$",message = "性別はいずれかを入力してください")
     private String sex;
 
     @Size(max = 255, message = "備考は255文字以内で入力してください")
