@@ -3,7 +3,6 @@ package raisetech.student.management.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 import jakarta.validation.constraints.Size;
@@ -89,6 +88,14 @@ public String  throwTestException() throws TestException {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> handleNotFoundExcption(NotFoundException ex){
         return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+    @PutMapping("/studentCourses/{studentId}/status")
+    public ResponseEntity<String>updateApplicationStatus(
+            @PathVariable String studentId,
+            @RequestParam ApplicationStatus newStatus){
+
+        service.updateCourseStatus(studentId, newStatus);
+        return ResponseEntity.ok("更新しました");
     }
 }
 

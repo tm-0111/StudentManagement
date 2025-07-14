@@ -58,7 +58,9 @@ public interface StudentRepository {
      */
     void updateStudentCourse(StudentCourse studentCourse);
 
-  // @Delete("DELETE FROM students courses WHERE student_id = #{studentId}")
+    StudentCourse findCourseById(String studentId);
+
+    // @Delete("DELETE FROM students courses WHERE student_id = #{studentId}")
    //void deleteByStudentId(@Param("student_id") String studentId);
 
 }

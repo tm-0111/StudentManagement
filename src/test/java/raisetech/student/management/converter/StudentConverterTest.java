@@ -18,12 +18,12 @@ public class StudentConverterTest {
     private StudentConverter sut;
 
     @BeforeEach
-    void befor(){
+    void befor() {
         sut = new StudentConverter();
     }
 
     @Test
-    void 受講生のリストと受講生コース情報のリストが作成できること(){
+    void 受講生のリストと受講生コース情報のリストが作成できること() {
         Student student = createStudent();
 
         StudentCourse studentCourse = new StudentCourse();
@@ -31,7 +31,7 @@ public class StudentConverterTest {
         studentCourse.setStudentId("1");
         studentCourse.setCourseName("Javaコース");
         studentCourse.setCourseStartAt(LocalDateTime.now());
-    studentCourse.setCourseEndAt(LocalDateTime.now().plusYears(1));
+        studentCourse.setCourseEndAt(LocalDateTime.now().plusYears(1));
 
         List<Student> studentList = List.of(student);
         List<StudentCourse> studentCourseList = List.of(studentCourse);
@@ -43,7 +43,7 @@ public class StudentConverterTest {
     }
 
     @Test
-    void 受講生リストと受講生コース情報のリストとを渡したときに紐づかない受講生コース情報は除外されること(){
+    void 受講生リストと受講生コース情報のリストとを渡したときに紐づかない受講生コース情報は除外されること() {
         Student student = createStudent();
 
         StudentCourse studentCourse = new StudentCourse();
@@ -54,13 +54,14 @@ public class StudentConverterTest {
         studentCourse.setCourseEndAt(LocalDateTime.now().plusYears(1));
 
         List<Student> studentList = List.of(student);
-        List<StudentCourse> studentCourseList =List.of(studentCourse);
+        List<StudentCourse> studentCourseList = List.of(studentCourse);
 
         List<StudentDetail> actual = sut.convertStudentDetails(studentList, studentCourseList);
 
         assertThat(actual.get(0).getStudent()).isEqualTo(student);
         assertThat(actual.get(0).getStudentCourseList()).isEmpty();
     }
+
     private static Student createStudent() {
         Student student = new Student();
         student.setId("1");
@@ -75,10 +76,6 @@ public class StudentConverterTest {
         student.setDeleted(false);
         return student;
     }
-}
-class StudentConverterTest {
-
-    private final StudentConverter converter = new StudentConverter();
 
     @Test
     void 受講生とコースをマッピングできること() {
@@ -105,7 +102,7 @@ class StudentConverterTest {
         course2.setCourseStartAt(LocalDateTime.now().minusMonths(1));
         course2.setCourseEndAt(LocalDateTime.now());
 
-        List<StudentDetail> result = converter.convertStudentDetails(
+        List<StudentDetail> result = sut.convertStudentDetails(
                 List.of(student1, student2),
                 List.of(course1, course2)
         );
@@ -129,7 +126,7 @@ class StudentConverterTest {
         student.setId("999");
         student.setName("テストユーザー");
 
-        List<StudentDetail> result = converter.convertStudentDetails(
+        List<StudentDetail> result = sut.convertStudentDetails(
                 List.of(student),
                 List.of()
         );
@@ -139,4 +136,3 @@ class StudentConverterTest {
         assertThat(result.get(0).getStudentCourseList()).isEmpty();
     }
 }
-
