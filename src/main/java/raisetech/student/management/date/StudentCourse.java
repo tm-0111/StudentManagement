@@ -2,14 +2,16 @@ package raisetech.student.management.date;
 
 
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import raisetech.student.management.ApplicationStatus;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 
 public class StudentCourse {
 
@@ -20,10 +22,9 @@ public class StudentCourse {
     private LocalDateTime courseStartAt;
     private LocalDateTime courseEndAt;
     private LocalDateTime updateAt;
-    @NotNull(message = "申し込み状況は必須です")
+    private String createdAt;
+    //@NotNull(message = "申し込み状況は必須です")
     private String applicationStatus;
 
-    public void setApplicationStatus(ApplicationStatus newStatus) {
-    }
 }
 

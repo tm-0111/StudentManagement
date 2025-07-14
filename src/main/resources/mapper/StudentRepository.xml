@@ -44,7 +44,9 @@
 
     <update id="updateStudentCourse" parameterType="raisetech.student.management.date.StudentCourse" statementType="PREPARED">
         UPDATE students_courses
-        SET course_name = #{courseName}
+        SET course_name = #{courseName},
+        course_start_at = #{courseStartAt},
+        course_end_at = #{courseEndAt}
         WHERE id = #{id}
     </update>
         </mapper>
