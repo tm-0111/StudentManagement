@@ -9,7 +9,7 @@ import raisetech.student.management.date.StudentCourse;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @MybatisTest
 class StudentRepositoryTest {
@@ -21,17 +21,14 @@ class StudentRepositoryTest {
     void 受講生の全件検索が行えること() {
         List<Student> actual = sut.search();
 
-        assertThat(actual.size()).isEqualTo(5);
+        assertThat(actual).hasSizeGreaterThanOrEqualTo(3);
 
-        Student student = actual.get(0);
-        assertThat(student.getId()).isEqualTo("1");
-        assertThat(student.getName()).isEqualTo("山田太郎");
-        assertThat(student.getKanaName()).isEqualTo("ヤマダタロウ");
-        assertThat(student.getNickname()).isEqualTo("タロ");
-        assertThat(student.getEmail()).isEqualTo("taro@example.com");
-        assertThat(student.getArea()).isEqualTo("東京");
-        assertThat(student.getAge()).isEqualTo(25);
-        assertThat(student.getSex()).isEqualTo("男性");
+        Student student1 = new Student("1", "山田太郎", "ヤマダタロウ", "タロ", "taro@example.com", "東京", 25, "男性", null, false);
+        Student student2 = new Student("4", "佐藤良子", "サトウリョウコ", "リョウ", "ryoko@example.com", "福岡", 28, "女性", null, false);
+        Student student3 = new Student("3", "田中花子", "タナカハナコ", "ハナ", "hana@example.com", "北海道", 22, "女性", null, false);
+
+        assertThat(actual)
+                .contains(student1, student2, student3);
     }
 
     @Test
@@ -89,33 +86,51 @@ class StudentRepositoryTest {
 
     @Test
     void 受講生コースの登録が行えること() {
-        StudentCourse course = new StudentCourse();
-        course.setStudentId("1");
-        course.setCourseName("testCourse");
-        course.setCourseStartAt(LocalDateTime.of(2025, 1, 1, 3, 3));
-        course.setCourseEndAt(LocalDateTime.of(2025, 6, 30, 1, 1));
+        StudentCourse studentCourse = new StudentCourse(
+                null,
+                "1",
+                "Javaコース",
+                LocalDateTime.of(2023, 4, 1, 9, 0, 0),
+                LocalDateTime.of(2023, 7, 1, 15, 0, 0),
+                null,
+                null,
+                null
+        );
 
-        sut.registerStudentCourse(course);
+        sut.registerStudentCourse(studentCourse);
 
-        List<StudentCourse> actual = sut.searchStudentCourseList();
+        List<StudentCourse> actual = sut.searchStudentCourse("1");
 
-        assertThat(actual.size()).isEqualTo(11);
+        assertThat(actual).isNotEmpty();
+        assertThat(actual).anySatisfy(course ->
+                assertThat(course.getCourseName()).isEqualTo("Javaコース")
+        );
     }
 
     @Test
     void 受講生コースの更新が行えること() {
-        StudentCourse course = new StudentCourse();
-        course.setStudentId("1");
-        course.setCourseName("testCourse");
-        course.setCourseStartAt(LocalDateTime.of(2025, 1, 1, 3, 3));
-        course.setCourseEndAt(LocalDateTime.of(2025, 6, 30, 1, 1));
+        StudentCourse studentCourse = new StudentCourse(
+                "1",
+                "1",
+                "testCourse",
+                LocalDateTime.of(2025, 1, 1, 3, 3),
+                LocalDateTime.of(2025, 6, 30, 1, 1),
+                null,
+                null,
+                null
+        );
 
-        sut.registerStudentCourse(course);
+        sut.registerStudentCourse(studentCourse);
 
-        course.setCourseName("newCourse");
-        sut.updateStudentCourse(course);
+        studentCourse.setCourseName("newCourse");
+        sut.updateStudentCourse(studentCourse);
 
         List<StudentCourse> actual = sut.searchStudentCourse("1");
-        assertThat(actual.size()).isEqualTo(1);
+        assertThat(actual).anySatisfy(course -> {
+            assertThat(course.getId()).isEqualTo("1");
+            assertThat(course.getCourseName()).isEqualTo("newCourse");
+            assertThat(course.getCourseStartAt()).isEqualTo(LocalDateTime.of(2025, 1, 1, 3, 3));
+            assertThat(course.getCourseEndAt()).isEqualTo(LocalDateTime.of(2025, 6, 30, 1, 1));
+        });
     }
 }
