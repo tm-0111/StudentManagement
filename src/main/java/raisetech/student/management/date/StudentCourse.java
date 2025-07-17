@@ -21,10 +21,9 @@ public class StudentCourse {
     private String courseName;
     private LocalDateTime courseStartAt;
     private LocalDateTime courseEndAt;
-    private LocalDateTime updateAt;
-    private String createdAt;
+    private LocalDateTime updatedAt;
+    private LocalDateTime createdAt;
     //@NotNull(message = "申し込み状況は必須です")
     private String applicationStatus;
-
 }
 
