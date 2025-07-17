@@ -12,9 +12,11 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import raisetech.student.management.date.StudentCourse;
 import raisetech.student.management.domein.StudentDetail;
 import raisetech.student.management.exception.TestException;
 import raisetech.student.management.service.StudentService;
+import raisetech.student.management.ApplicationStatus;
 
 import java.util.List;
 
@@ -86,17 +88,22 @@ public String  throwTestException() throws TestException {
         throw  new NotFoundException("このAPIは現在使用できません。古いURLとなってます。");
     }
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<String> handleNotFoundExcption(NotFoundException ex){
+    public ResponseEntity<String> handleNotFoundException(NotFoundException ex){
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
-    @PutMapping("/studentCourses/{studentId}/status")
-    public ResponseEntity<String>updateApplicationStatus(
-            @PathVariable String studentId,
-            @RequestParam ApplicationStatus newStatus){
 
-        service.updateCourseStatus(studentId, newStatus);
-        return ResponseEntity.ok("更新しました");
+    @Operation(summary = "ステータス更新", description = "指定した受講生のコースステータスを更新します。")
+    @PutMapping("/studentCourse/{courseId}/status")
+    public ResponseEntity<String>updateApplicationStatus(
+            @PathVariable String courseId,
+            @RequestParam ApplicationStatus newStatus){
+try {
+    service.updateCourseStatus(courseId, newStatus);
+        return ResponseEntity.ok("申込情報を更新しました");
+    }catch (IllegalArgumentException e){
+    return ResponseEntity.badRequest().body(e.getMessage());
     }
+}
 }
 
 

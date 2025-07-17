@@ -11,9 +11,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import raisetech.student.management.date.Student;
+import raisetech.student.management.date.StudentCourse;
 import raisetech.student.management.domein.StudentDetail;
 import raisetech.student.management.service.StudentService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -21,8 +23,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import raisetech.student.management.ApplicationStatus;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -34,6 +38,7 @@ class StudentControllerTest {
     @MockitoBean
     private StudentService service;
     private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    private String status;
 
     @Test
     void 受講生詳細の一覧検索が実行できて空のリストが返ってくること() throws Exception {
@@ -41,9 +46,6 @@ class StudentControllerTest {
 
         mockMvc.perform(get("/studentList"))
                 .andExpect(status().isOk());
-
-        // .andExpect(content().json("[\"student\":null,\"studentCourseList\":null]"));
-
         verify(service, times(1)).searchStudentList();
     }
 
@@ -108,7 +110,8 @@ class StudentControllerTest {
         //本来であれば返りは登録されたデータが入るが、モック化すると意味がないため、レスポンスは作らない。
         mockMvc.perform(post("/registerStudent")
 
-                        .contentType(MediaType.APPLICATION_JSON).content("{"
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{"
                                 + "\"student\": {"
                                 + "\"name\": \"山田太郎\","
                                 + "\"kanaName\": \"ヤマダタロウ\","
@@ -123,27 +126,33 @@ class StudentControllerTest {
                                 + "{ \"courseName\": \"JAVAコース\" }"
                                 + "]"
                                 + "}")
-
-                        .contentType(MediaType.APPLICATION_JSON).content("{"
-                                + "\"student\": {"
-                                + "\"name\": \"山田太郎\","
-                                + "\"kanaName\": \"ヤマダタロウ\","
-                                + "\"nickname\": \"タロ\","
-                                + "\"email\": \"taro@example.com\","
-                                + "\"area\": \"東京\","
-                                + "\"age\": 25,"
-                                + "\"sex\": \"男性\","
-                                + "\"remark\": \"\""
-                                + "},"
-                                + "\"studentCourseList\": ["
-                                + "{ \"courseName\": \"JAVAコース\" }"
-                                + "]"
-                                + "}")
-
                 )
                 .andExpect(status().isOk());
 
         verify(service, times(1)).registerStudent(any());
+    }
+    @Test
+    void 不正なデータで受講生詳細を登録しバリデーションエラーになること() throws Exception{
+
+        mockMvc.perform(post("/registerStudent")
+                        //名前が空の場合
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{"
+                        + "\"student\": {"
+                        + "\"name\": \"\","//←名前が空
+                        + "\"kanaName\": \"ヤマダタロウ\","
+                        + "\"nickname\": \"タロ\","
+                        + "\"email\": \"taro@example.com\","
+                        + "\"area\": \"東京\","
+                        + "\"age\": 25,"
+                        + "\"sex\": \"男性\","
+                        + "\"remark\": \"\""
+                        + "},"
+                        + "\"studentCourseList\": ["
+                        + "{ \"courseName\": \"JAVAコース\" }"
+                        + "]"
+                        + "}"))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -180,10 +189,38 @@ class StudentControllerTest {
     }
 
     @Test
-    void 使用できないAPIにアクセスすると400とエラーメッセージが返る() throws Exception {
+    void 存在しないAPIにアクセスすると400エラーが返る() throws Exception {
         mockMvc.perform(get("/exception"))
 
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("このAPIは現在使用できません。古いURLとなってます。"));
+    }
+    @Test
+    void ステータス更新に成功すること()throws Exception{
+        String courseId = "1";
+        String newStatus = "FINAL";
+
+        doNothing().when(service).updateCourseStatus(courseId, ApplicationStatus.valueOf(newStatus));
+
+        mockMvc.perform(put("/studentCourse/{courseId}/status",courseId)
+                .param("newStatus",newStatus))
+                .andExpect(status().isOk())
+                .andExpect(content().string("申込情報を更新しました"));
+
+        verify(service).updateCourseStatus(courseId, ApplicationStatus.valueOf(newStatus));
+    }
+    @Test
+    void ステータス更新で不正な操作なら400エラーを返すこと()throws Exception{
+        String courseId = "1";
+        String newStatus = "FINAL";
+        ApplicationStatus newStatusEnum = ApplicationStatus.valueOf(newStatus);
+
+        doThrow(new IllegalArgumentException("不正なステータスです"))
+                .when(service).updateCourseStatus(courseId, newStatusEnum);
+
+        mockMvc.perform(put("/studentCourse/{courseId}/status", courseId)
+                .param("newStatus",newStatus))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("不正なステータスです"));
     }
 }
