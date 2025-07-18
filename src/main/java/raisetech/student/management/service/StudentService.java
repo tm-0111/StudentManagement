@@ -104,46 +104,59 @@ public class StudentService {
                 .forEach(studentCourse -> repository.updateStudentCourse(studentCourse));
     }
 
+    /**
+     * 受講生詳細の更新を行います。
+     * 受講生と受講生コース情報をそれぞれ更新します。
+     *
+     * @param studentDetail 　受講生詳細
+     */
     @Transactional
-    public void updateCourseStatus(String studentId, ApplicationStatus newStatus) {
-        StudentCourse course = repository.findCourseById(studentId);
+    public void updatedStudent(StudentDetail studentDetail) {
+        //学生情報を更新
+        repository.updateStudent(studentDetail.getStudent());
+        studentDetail.getStudentCourseList()
+                .forEach(studentCourse -> repository.updateStudentCourse(studentCourse));
+    }
 
-        if (course == null) throw new IllegalArgumentException("コースが見つかりません");
+    /**
+     * 受講生コースのステータスを更新する
+     *
+     * @param courseId 対象受講生のID
+     * @param newStatus 移行先のステータス
+     * @throws IllegalArgumentException 無効な移行やコース未存在の場合
+     */
+    @Transactional
+    public void updateCourseStatus(String courseId, ApplicationStatus newStatus) {
+        StudentCourse course = repository.findCourseById(courseId);
 
-        if (!isValidTransition(course.getApplicationStatus(), newStatus)) {
-            throw new IllegalArgumentException("不正な操作です:" + course.getApplicationStatus() + "→" + newStatus);
+        if (course == null) {
+            throw new IllegalArgumentException("コースが見つかりません");
         }
-            course.setApplicationStatus(newStatus);
-            course.setUpdateAt(LocalDateTime.now());
-            repository.updateStudentCourse(course);
-    }
 
-    private boolean isValidTransition(@NotNull(message = "申し込み状況は必須です") String applicationStatus, ApplicationStatus newStatus) {
-    ApplicationStatus current;
-    try {
-        current = ApplicationStatus.valueOf(applicationStatus);
-    } catch (IllegalArgumentException e){
-        return false;
-    }
-    ApplicationStatus[] order = {
-            ApplicationStatus.仮申込,
-            ApplicationStatus.本申込,
-            ApplicationStatus.受講中,
-            ApplicationStatus.受講終了
-    };
-    int crrentIndex = -1;
-    int newIndex = -1;
+        ApplicationStatus currentStatus = ApplicationStatus.valueOf(course.getApplicationStatus());
 
-    for (int i = 0; i < order.length; i++){
-        if (order[i] == current) crrentIndex = i;
-        if (order[i] == newStatus) newIndex = i;
-    }
-    if (crrentIndex == -1 || newIndex == -1){
-        return false;
-    }
-    return Math.abs(newIndex - crrentIndex) == 1 || newIndex == crrentIndex;
-    }
+        if (!isValidTransition(currentStatus, newStatus)) {
+            throw new IllegalArgumentException("不正な操作です:" + currentStatus + "→" + newStatus);
+        }
+        course.setApplicationStatus(String.valueOf(newStatus));
+        course.setUpdatedAt(LocalDateTime.now());
+        repository.updateStudentCourse(course);
 
-    public void updateCourseStatus(String studentId, raisetech.student.management.controller.ApplicationStatus newStatus) {
+    }
+    /**
+     * ステータス移行が有効かを判定する
+     * 　1段階のみ前後の移行を許可（例: 仮申込⇄本申込）
+     * 　COMPLETED（受講終了）からの移行は禁止
+     *
+     * @param current 現在のステータス
+     * @param next    移行先のステータス
+     * @return 有効な移行であれば true、それ以外は false
+     */
+    private boolean isValidTransition (ApplicationStatus current, ApplicationStatus next){
+        if (current == ApplicationStatus.COMPLETED) {
+            return false;
+        }
+        int diff = Math.abs(current.ordinal() - next.ordinal());
+        return diff == 1;
     }
 }

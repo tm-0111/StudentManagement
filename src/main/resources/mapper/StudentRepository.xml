@@ -2,6 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="raisetech.student.management.Repository.StudentRepository">
 
+    <resultMap id="StudentCourseResultMap" type="raisetech.student.management.date.StudentCourse">
+        <id property="id" column="id" />
+        <result property="studentId" column="student_id" />
+        <result property="courseName" column="course_name" />
+        <result property="courseStartAt" column="course_start_at" />
+        <result property="courseEndAt" column="course_end_at" />
+        <result property="updatedAt" column="updated_at" />
+        <result property="createdAt" column="created_at" />
+        <result property="applicationStatus" column="application_status" />
+    </resultMap>
     <!-- 受講生の全件検索　-->
 <select id="search" resultType="raisetech.student.management.date.Student">
     SELECT * FROM students
@@ -11,21 +21,40 @@
         SELECT * FROM students WHERE id = #{id}
     </select>
     <!-- 受講生の全件コース情報-->
-    <select id="searchStudentCourseList" resultType="raisetech.student.management.date.StudentCourse">
+    <select id="searchStudentCourseList" resultMap="StudentCourseResultMap" >
         SELECT * FROM students_courses
     </select>
     <!-- 受講生IDに紐づく受講生コース情報を検索-->
-    <select id="searchStudentCourse" resultType="raisetech.student.management.date.StudentCourse">
+    <select id="searchStudentCourse"  resultMap="StudentCourseResultMap">
         SELECT * FROM students_courses WHERE id = #{id}
     </select>
-<insert id="registerStudent" parameterType="raisetech.student.management.date.Student" statementType="PREPARED" useGeneratedKeys = "true" keyProperty = "id">
+    <!-- 受講生IDに紐づく受講生コース1件を取得 -->
+    <select id="findCourseByStudentId" resultMap="StudentCourseResultMap">
+        SELECT * FROM students_courses WHERE student_id = #{studentId}
+    </select>
+    <!-- 申込ステータス -->
+    <select id="findCourseById" resultType="raisetech.student.management.date.StudentCourse">
+        SELECT
+        id,
+        student_id,
+        course_name,
+        course_start_at,
+        course_end_at,
+        updated_at,
+        application_status
+        FROM students_courses
+        WHERE id = #{id}
+    </select>
+
+    <!-- 受講生登録　-->
+    <insert id="registerStudent" parameterType="raisetech.student.management.date.Student" statementType="PREPARED" useGeneratedKeys = "true" keyProperty = "id">
     INSERT INTO students(name, nickname, kana_name, email, area, age, sex, remark, is_deleted )
     VALUES (#{name}, #{nickname}, #{kanaName}, #{email}, #{area}, #{age}, #{sex}, #{remark}, false)
         </insert>
 
-    <insert id="registerStudentCourse" useGeneratedKeys = "true" parameterType="raisetech.student.management.date.StudentCourse" statementType="PREPARED" keyProperty = "studentId">
-        INSERT INTO students_courses ( student_id, course_name, course_start_at, course_end_at)
-        VALUES (#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt})
+    <insert id="registerStudentCourse" useGeneratedKeys = "true" parameterType="raisetech.student.management.date.StudentCourse" statementType="PREPARED" keyProperty = "id">
+        INSERT INTO students_courses ( student_id, course_name, course_start_at, course_end_att, application_status)
+        VALUES (#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt}, #{applicationStatus})
     </insert>
 
     <update id="updateStudent" parameterType="raisetech.student.management.date.Student" statementType="PREPARED">
@@ -47,6 +76,7 @@
         SET course_name = #{courseName},
         course_start_at = #{courseStartAt},
         course_end_at = #{courseEndAt}
+        application_status = #{applicationStatus}
         WHERE id = #{id}
     </update>
         </mapper>
