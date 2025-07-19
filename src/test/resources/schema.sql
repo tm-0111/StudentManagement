@@ -11,11 +11,14 @@
     is_deleted BOOLEAN
     );
 
-CREATE TABLE IF NOT EXISTS students_courses(
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    student_id INT NOT NULL,
-    course_name VARCHAR(50) NOT NULL,
-    course_start_at TIMESTAMP,
-    course_end_at TIMESTAMP
+CREATE TABLE students_courses (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  student_id VARCHAR(36) NOT NULL,
+  course_name VARCHAR(50) NOT NULL,
+  course_start_at TIMESTAMP,
+  course_end_at TIMESTAMP,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  application_status VARCHAR(20) NOT NULL DEFAULT 'PROVISIONAL'
 );
 

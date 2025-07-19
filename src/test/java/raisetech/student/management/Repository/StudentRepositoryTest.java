@@ -3,6 +3,7 @@ package raisetech.student.management.Repository;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import raisetech.student.management.ApplicationStatus;
 import raisetech.student.management.date.Student;
 import raisetech.student.management.date.StudentCourse;
 
@@ -132,5 +133,37 @@ class StudentRepositoryTest {
             assertThat(course.getCourseStartAt()).isEqualTo(LocalDateTime.of(2025, 1, 1, 3, 3));
             assertThat(course.getCourseEndAt()).isEqualTo(LocalDateTime.of(2025, 6, 30, 1, 1));
         });
+    }
+    @Test
+    void 受講生コース情報が取得できること(){
+        StudentCourse course = sut.findCourseById("1");
+
+        System.out.println("取得した　applicationStatus: "+ course.getApplicationStatus());
+        assertThat(course).isNotNull();
+        assertThat(course.getApplicationStatus()).isEqualTo("PROVISIONAL");
+    }
+    @Test
+    void 受講生コースのステータスが更新できること(){
+        StudentCourse course = new StudentCourse(
+                "1",
+                "1",
+                "Java",
+                LocalDateTime.of(2025, 1, 1, 3, 3),
+                LocalDateTime.of(2025, 6, 30, 1, 1),
+                null,
+                null,
+                "PROVISIONAL"
+        );
+        sut.registerStudentCourse(course);
+        // コースIDを取得
+        List<StudentCourse> courseList = sut.searchStudentCourse("1");
+        String courseId = courseList.get(courseList.size() -1).getId();
+        //ステータス更新
+        StudentCourse courseToUpdate = sut.findCourseById(courseId);
+        courseToUpdate.setApplicationStatus("FINAL");
+        sut.updateStudentCourse(courseToUpdate);
+        //検証
+        StudentCourse updated = sut.findCourseById(courseId);
+        assertThat(updated.getApplicationStatus()).isEqualTo("FINAL");
     }
 }
