@@ -1,5 +1,6 @@
 package raisetech.student.management.Repository;
 import org.apache.ibatis.annotations.*;
+import raisetech.student.management.ApplicationStatus;
 import raisetech.student.management.date.Student;
 import raisetech.student.management.date.StudentCourse;
 import java.util.List;
@@ -30,9 +31,15 @@ public interface StudentRepository {
     /**
      * 受講生IDに紐づく受講生コース情報を検索します。
      * @param studentId　受講生ID
-     * @return　受講生IDに紐づく受講生コース情報
+     * @return 受講生IDに紐づく受講生コース情報
      */
     List<StudentCourse> searchStudentCourse(String studentId);
+
+    /**
+     * コースIDで受講生コースを取得する。
+     * @param courseId　コースID
+     */
+    StudentCourse findCourseById(String courseId);
 
     /**
      *受講生を新規登録します。IDに関しては自動採番を行う。
@@ -57,10 +64,5 @@ public interface StudentRepository {
      * @param studentCourse　受講生コース情報
      */
     void updateStudentCourse(StudentCourse studentCourse);
-
-    StudentCourse findCourseById(String studentId);
-
-    // @Delete("DELETE FROM students courses WHERE student_id = #{studentId}")
-   //void deleteByStudentId(@Param("student_id") String studentId);
 
 }

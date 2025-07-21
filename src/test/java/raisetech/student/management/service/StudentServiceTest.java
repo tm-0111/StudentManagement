@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import raisetech.student.management.ApplicationStatus;
 import raisetech.student.management.Repository.StudentRepository;
 import raisetech.student.management.controller.converter.StudentConverter;
 import raisetech.student.management.date.Student;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -42,7 +43,7 @@ class StudentServiceTest {
         student.setId(id);
         StudentCourse studentCourse = new StudentCourse();
 
-        sut.initStudentsCourse(studentCourse, student);
+        sut.initStudentCourse(studentCourse, student);
 
         assertEquals(id, studentCourse.getStudentId());
         assertEquals(LocalDateTime.now().getHour(),studentCourse.getCourseStartAt().getHour());
@@ -121,5 +122,37 @@ class StudentServiceTest {
 
         verify(repository).updateStudent(student);
         verify(repository).updateStudentCourse(course);
+    }
+    @Test
+    void  申込情報の更新が成功すること(){
+        String studentId = "1";
+        StudentCourse course = new StudentCourse();
+        course.setStudentId(studentId);
+        course.setApplicationStatus("PROVISIONAL");
+        //仮申込から本申込へ
+        when(repository.findCourseById(studentId)).thenReturn(course);
+
+        ApplicationStatus newStatus = ApplicationStatus.FINAL;
+
+        sut.updateCourseStatus(studentId, newStatus);
+
+        assertEquals("FINAL", course.getApplicationStatus());
+        verify(repository).updateStudentCourse(course);
+    }
+    @Test
+    void 不正な移行が発生した場合エラーメッセージが返ること(){
+        String studentId = "2";
+
+        StudentCourse course =  new StudentCourse();
+        course.setId(studentId);
+        course.setApplicationStatus("PROVISIONAL");
+
+        when(repository.findCourseById(studentId)).thenReturn(course);
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,() ->{
+            sut.updateCourseStatus(studentId,ApplicationStatus.IN_PROGRESS);
+        });
+        assertTrue(exception.getMessage().contains("不正な操作です"));
+
     }
 }
