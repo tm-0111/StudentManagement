@@ -75,7 +75,7 @@
         UPDATE students_courses
         SET course_name = #{courseName},
         course_start_at = #{courseStartAt},
-        course_end_at = #{courseEndAt}
+        course_end_at = #{courseEndAt},
         application_status = #{applicationStatus}
         WHERE id = #{id}
     </update>
