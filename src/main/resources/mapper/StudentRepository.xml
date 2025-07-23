@@ -26,7 +26,7 @@
     </select>
     <!-- 受講生IDに紐づく受講生コース情報を検索-->
     <select id="searchStudentCourse"  resultMap="StudentCourseResultMap">
-        SELECT * FROM students_courses WHERE id = #{id}
+        SELECT * FROM students_courses WHERE student_id = #{studentId}
     </select>
     <!-- 受講生IDに紐づく受講生コース1件を取得 -->
     <select id="findCourseByStudentId" resultMap="StudentCourseResultMap">
