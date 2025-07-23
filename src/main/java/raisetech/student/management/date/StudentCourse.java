@@ -3,7 +3,8 @@ package raisetech.student.management.date;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import raisetech.student.management.ApplicationStatus;
+import lombok.Setter;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
@@ -25,5 +26,5 @@ public class StudentCourse {
     private LocalDateTime createdAt;
     //@NotNull(message = "申し込み状況は必須です")
     private String applicationStatus;
-}
 
+}

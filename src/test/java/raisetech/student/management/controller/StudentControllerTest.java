@@ -216,7 +216,7 @@ class StudentControllerTest {
         ApplicationStatus newStatusEnum = ApplicationStatus.valueOf(newStatus);
 
         doThrow(new IllegalArgumentException("不正なステータスです"))
-                .when(service).updateCourseStatus(courseId, newStatusEnum);
+                .when(service).updateCourseStatus(courseId, ApplicationStatus.valueOf(newStatus));
 
         mockMvc.perform(put("/studentCourse/{courseId}/status", courseId)
                 .param("newStatus",newStatus))

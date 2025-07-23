@@ -6,7 +6,8 @@ VALUES
 ( '佐藤良子', 'サトウリョウコ', 'リョウ', 'ryoko@example.com', '福岡', 28, '女性'),
 ( '伊藤悠', 'イトウハルカ', 'ハル', 'haruka@example.com', '愛知', 35, 'その他');
 
-INSERT INTO students_courses (student_id, course_name, course_start_at, course_end_at, application_status) VALUES
+INSERT INTO students_courses (student_id, course_name, course_start_at, course_end_at, application_status)
+VALUES
 ('1', 'Javaコース', '2023-04-01 09:00:00', '2023-07-01 15:00:00', 'PROVISIONAL'),
 ('1', 'AWSコース', '2023-05-01 10:00:00', '2023-08-01 16:00:00', 'PROVISIONAL'),
 ('2', 'デザインコース', '2023-06-01 11:00:00', '2023-09-01 17:00:00', 'PROVISIONAL'),

@@ -150,7 +150,7 @@ class StudentServiceTest {
         when(repository.findCourseById(studentId)).thenReturn(course);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,() ->{
-            sut.updateCourseStatus(studentId,ApplicationStatus.IN_PROGRESS);
+            sut.updateCourseStatus(studentId, ApplicationStatus.IN_PROGRESS);
         });
         assertTrue(exception.getMessage().contains("不正な操作です"));
 

@@ -138,11 +138,11 @@ public class StudentService {
         if (!isValidTransition(currentStatus, newStatus)) {
             throw new IllegalArgumentException("不正な操作です:" + currentStatus + "→" + newStatus);
         }
-        course.setApplicationStatus(String.valueOf(newStatus));
-        course.setUpdatedAt(LocalDateTime.now());
-        repository.updateStudentCourse(course);
+            course.setApplicationStatus(String.valueOf(newStatus));
+            course.setUpdatedAt(LocalDateTime.now());
+            repository.updateStudentCourse(course);
+        }
 
-    }
     /**
      * ステータス移行が有効かを判定する
      * 　1段階のみ前後の移行を許可（例: 仮申込⇄本申込）
@@ -152,7 +152,7 @@ public class StudentService {
      * @param next    移行先のステータス
      * @return 有効な移行であれば true、それ以外は false
      */
-    private boolean isValidTransition (ApplicationStatus current, ApplicationStatus next){
+    private boolean isValidTransition(ApplicationStatus current, ApplicationStatus next) {
         if (current == ApplicationStatus.COMPLETED) {
             return false;
         }

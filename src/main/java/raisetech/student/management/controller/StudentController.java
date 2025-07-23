@@ -92,9 +92,10 @@ public String  throwTestException() throws TestException {
     @PutMapping("/studentCourses/{courseId}/status")
     public ResponseEntity<String>updateApplicationStatus(
             @PathVariable String courseId,
-            @RequestParam ApplicationStatus newStatus){
+            @RequestParam String newStatus){
         try {
-            service.updateCourseStatus(courseId, newStatus);
+            ApplicationStatus statusEnum =  ApplicationStatus.valueOf(newStatus);
+            service.updateCourseStatus(courseId, statusEnum);
             return ResponseEntity.ok("申込情報を更新しました");
         }catch (IllegalArgumentException e){
             return ResponseEntity.badRequest().body(e.getMessage());
