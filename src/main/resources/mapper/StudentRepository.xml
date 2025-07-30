@@ -35,7 +35,6 @@
     <!-- 申込ステータス -->
     <select id="findCourseById" resultType="raisetech.student.management.date.StudentCourse">
         SELECT
-        id,
         student_id,
         course_name,
         course_start_at,
@@ -53,7 +52,7 @@
         </insert>
 
     <insert id="registerStudentCourse" useGeneratedKeys = "true" parameterType="raisetech.student.management.date.StudentCourse" statementType="PREPARED" keyProperty = "id">
-        INSERT INTO students_courses ( student_id, course_name, course_start_at, course_end_att, application_status)
+        INSERT INTO students_courses ( student_id, course_name, course_start_at, course_end_at, application_status)
         VALUES (#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt}, #{applicationStatus})
     </insert>
 

@@ -7,15 +7,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import raisetech.student.management.date.Student;
-import raisetech.student.management.date.StudentCourse;
 import raisetech.student.management.domein.StudentDetail;
 import raisetech.student.management.service.StudentService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -35,7 +33,7 @@ class StudentControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockitoBean
+    @MockBean
     private StudentService service;
     private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
     private String status;

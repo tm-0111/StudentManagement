@@ -33,7 +33,7 @@ public class Student {
     @Min(value = 0, message = "年齢は0以上を入力してください")
     private int age;
 
-    @Pattern(regexp = "^(男性|女性|その他|回答しない)?$",message = "性別はいずれかを入力してください")
+    @Pattern(regexp = "^(男性|女性|その他|回答しない)$",message = "性別はいずれかを入力してください")
     private String sex;
 
     @Size(max = 255, message = "備考は255文字以内で入力してください")

@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * 受講生と受講生コース情報を受講生詳細に変換するコンバーターです。
  */
 @Component
-public class StudentConverter {
+public class StudentConverter{
 
     /**
      * 受講生に紐づく受講生コース情報をマッピングする。

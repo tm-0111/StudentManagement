@@ -159,4 +159,7 @@ public class StudentService {
         int diff = Math.abs(current.ordinal() - next.ordinal());
         return diff == 1;
     }
+
+    public void initStudentCourse(StudentCourse studentCourse, Student student) {
+    }
 }
