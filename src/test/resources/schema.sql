@@ -1,5 +1,5 @@
    CREATE TABLE IF NOT EXISTS students(
-    id VARCHAR(36) PRIMARY KEY,
+   id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
     kana_name VARCHAR(50) NOT NULL,
     nickname VARCHAR(50),
@@ -13,7 +13,7 @@
 
 CREATE TABLE students_courses (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  student_id VARCHAR(36) NOT NULL,
+  student_id INT NOT NULL,
   course_name VARCHAR(50) NOT NULL,
   course_start_at TIMESTAMP,
   course_end_at TIMESTAMP,
