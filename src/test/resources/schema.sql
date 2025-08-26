@@ -13,7 +13,7 @@
 
 CREATE TABLE students_courses (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  student_id INT NOT NULL,
+  student_id VARCHAR(36) NOT NULL,
   course_name VARCHAR(50) NOT NULL,
   course_start_at TIMESTAMP,
   course_end_at TIMESTAMP,

@@ -95,7 +95,7 @@ class StudentRepositoryTest {
                 LocalDateTime.of(2023, 7, 1, 15, 0, 0),
                 null,
                 null,
-                null
+                "PROVISIONAL"
         );
 
         sut.registerStudentCourse(studentCourse);
@@ -111,28 +111,26 @@ class StudentRepositoryTest {
     @Test
     void 受講生コースの更新が行えること() {
         StudentCourse studentCourse = new StudentCourse(
+                null,
                 "1",
-                "1",
-                "testCourse",
+                "Javaコース",
                 LocalDateTime.of(2025, 1, 1, 3, 3),
                 LocalDateTime.of(2025, 6, 30, 1, 1),
                 null,
                 null,
-                null
+                "FINAL"
         );
 
         sut.registerStudentCourse(studentCourse);
+        String courseId = studentCourse.getId();
 
         studentCourse.setCourseName("newCourse");
         sut.updateStudentCourse(studentCourse);
 
-        List<StudentCourse> actual = sut.searchStudentCourse("1");
-        assertThat(actual).anySatisfy(course -> {
-            assertThat(course.getId()).isEqualTo("1");
-            assertThat(course.getCourseName()).isEqualTo("newCourse");
-            assertThat(course.getCourseStartAt()).isEqualTo(LocalDateTime.of(2025, 1, 1, 3, 3));
-            assertThat(course.getCourseEndAt()).isEqualTo(LocalDateTime.of(2025, 6, 30, 1, 1));
-        });
+        StudentCourse updated = sut.findCourseById(courseId);
+        assertThat(updated.getCourseName()).isEqualTo("newCourse");
+        assertThat(updated.getCourseStartAt()).isEqualTo(LocalDateTime.of(2025, 1, 1, 3, 3));
+        assertThat(updated.getCourseEndAt()).isEqualTo(LocalDateTime.of(2025, 6, 30, 1, 1));
     }
     @Test
     void 受講生コース情報が取得できること(){
@@ -142,12 +140,13 @@ class StudentRepositoryTest {
         assertThat(course).isNotNull();
         assertThat(course.getApplicationStatus()).isEqualTo("PROVISIONAL");
     }
+
     @Test
-    void 受講生コースのステータスが更新できること(){
+    void 受講生コースのステータスが更新できること() {
         StudentCourse course = new StudentCourse(
+                null,
                 "1",
-                "1",
-                "Java",
+                "Javaコース",
                 LocalDateTime.of(2025, 1, 1, 3, 3),
                 LocalDateTime.of(2025, 6, 30, 1, 1),
                 null,
@@ -155,15 +154,15 @@ class StudentRepositoryTest {
                 "PROVISIONAL"
         );
         sut.registerStudentCourse(course);
-        // コースIDを取得
-        List<StudentCourse> courseList = sut.searchStudentCourse("1");
-        String courseId = courseList.get(courseList.size() -1).getId();
+
+        assertThat(course.getId()).isNotNull();
+
         //ステータス更新
-        StudentCourse courseToUpdate = sut.findCourseById(courseId);
-        courseToUpdate.setApplicationStatus("FINAL");
-        sut.updateStudentCourse(courseToUpdate);
-        //検証
-        StudentCourse updated = sut.findCourseById(courseId);
-        assertThat(updated.getApplicationStatus()).isEqualTo("FINAL");
+        course.setApplicationStatus("FINAL");
+        sut.updateStudentCourse(course);
+
+        //更新後の状態を取得して検証
+        StudentCourse updatedCourse = sut.findCourseById(course.getId());
+        assertThat(updatedCourse.getApplicationStatus()).isEqualTo("FINAL");
     }
 }
