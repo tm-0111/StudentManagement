@@ -3,7 +3,6 @@ package raisetech.student.management.Repository;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import raisetech.student.management.ApplicationStatus;
 import raisetech.student.management.date.Student;
 import raisetech.student.management.date.StudentCourse;
 
@@ -89,7 +88,7 @@ class StudentRepositoryTest {
     void 受講生コースの登録が行えること() {
         StudentCourse studentCourse = new StudentCourse(
                 null,
-                "1",
+              "1",
                 "Javaコース",
                 LocalDateTime.of(2023, 4, 1, 9, 0, 0),
                 LocalDateTime.of(2023, 7, 1, 15, 0, 0),
@@ -143,6 +142,7 @@ class StudentRepositoryTest {
 
     @Test
     void 受講生コースのステータスが更新できること() {
+
         StudentCourse course = new StudentCourse(
                 null,
                 "1",
