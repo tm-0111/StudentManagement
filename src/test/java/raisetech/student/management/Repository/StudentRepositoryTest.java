@@ -111,7 +111,7 @@ class StudentRepositoryTest {
     @Test
     void 受講生コースの更新が行えること() {
         StudentCourse studentCourse = new StudentCourse(
-                "1",
+                null,
                 "1",
                 "testCourse",
                 LocalDateTime.of(2025, 1, 1, 3, 3),
