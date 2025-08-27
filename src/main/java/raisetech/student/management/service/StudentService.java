@@ -161,5 +161,13 @@ public class StudentService {
     }
 
     public void initStudentCourse(StudentCourse studentCourse, Student student) {
+        // studentId をセット
+        studentCourse.setStudentId(student.getId());
+
+        // 開始日時を今にセット
+        studentCourse.setCourseStartAt(LocalDateTime.now());
+
+        // 終了日時を1年後にセット
+        studentCourse.setCourseEndAt(LocalDateTime.now().plusYears(1));
     }
 }

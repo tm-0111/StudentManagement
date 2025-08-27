@@ -136,7 +136,7 @@ class StudentServiceTest {
 
         sut.updateCourseStatus(studentId, newStatus);
 
-        assertEquals("FINAL", course.getApplicationStatus());
+        assertEquals("本申込", course.getApplicationStatus());
         verify(repository).updateStudentCourse(course);
     }
     @Test
