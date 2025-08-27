@@ -12,7 +12,7 @@ import lombok.*;
 
 public class Student {
 
-   // @Pattern(regexp = "\\d+", message = "数字のみ入力するようにしてください。")
+    @Pattern(regexp = "\\d+", message = "数字のみ入力するようにしてください。")
     private String id;
 
     @NotBlank(message = "名前は必須です")

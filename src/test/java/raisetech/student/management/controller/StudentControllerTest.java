@@ -200,7 +200,7 @@ class StudentControllerTest {
 
         doNothing().when(service).updateCourseStatus(courseId, ApplicationStatus.valueOf(newStatus));
 
-        mockMvc.perform(put("/studentCourse/{courseId}/status",courseId)
+        mockMvc.perform(put("/studentCourses/{courseId}/status",courseId)
                 .param("newStatus",newStatus))
                 .andExpect(status().isOk())
                 .andExpect(content().string("申込情報を更新しました"));
@@ -216,7 +216,7 @@ class StudentControllerTest {
         doThrow(new IllegalArgumentException("不正なステータスです"))
                 .when(service).updateCourseStatus(courseId, ApplicationStatus.valueOf(newStatus));
 
-        mockMvc.perform(put("/studentCourse/{courseId}/status", courseId)
+        mockMvc.perform(put("/studentCourses/{courseId}/status", courseId)
                 .param("newStatus",newStatus))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("不正なステータスです"));
